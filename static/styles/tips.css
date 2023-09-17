@@ -1,0 +1,165 @@
+:root {
+--text: #000000;
+--background: #f8f4ec;
+--primary: #eeb544;
+--secondary: #f9e6c2;
+--accent: #4932b8;
+}
+
+body {
+background-color: var(--background);
+margin: 0;
+padding: 0;
+border: 0;
+}
+
+.navbar {
+background-color: var(--background);
+color: var(--text);
+display: flex;
+align-items: center;
+padding: 10px;
+justify-content: space-between;
+}
+
+.navbar-logo {
+height: 50px;
+width: auto;
+}
+
+.navbar-menu {
+list-style-type: none;
+margin: 0;
+padding: 0;
+display: flex;
+justify-content: center;
+}
+
+.navbar-menu-item {
+margin-right: 20px;
+font-size: 18px;
+cursor: pointer;
+}
+
+.navbar-menu-item:last-child {
+margin-right: 0;
+}
+
+.navbar-menu-item:hover {
+text-decoration: underline;
+}
+
+/* Add your existing CSS styles here */
+
+.camp-selector {
+text-align: center;
+margin: 20px 0;
+}
+
+.camp-selector button {
+background-color: var(--primary);
+color: var(--background);
+border: none;
+border-radius: 4px;
+padding: 10px 20px;
+font-size: 18px;
+margin: 0 10px;
+cursor: pointer;
+}
+
+.camp-selector button:hover {
+background-color: var(--secondary);
+color: var(--text);
+}
+
+.card-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+justify-content: center;
+padding: 20px;
+}
+
+/* Card styles here */
+.camp-selector {
+text-align: center;
+margin: 20px 0;
+position: relative; /* Add this to establish a positioning context */
+}
+
+#campDropdownBtn {
+background-color: var(--primary);
+color: var(--background);
+border: none;
+border-radius: 4px;
+padding: 10px 20px;
+font-size: 18px;
+cursor: pointer;
+position: relative; /* Add this to establish a positioning context */
+}
+
+#campDropdownBtn::after {
+/* Add a down-arrow icon */
+content: "\25BE";
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+}
+
+.dropdown-menu {
+display: none;
+position: absolute;
+left: 50%; /* Center the dropdown horizontally under the button */
+transform: translateX(-50%); /* Adjust for centering */
+top: 100%; /* Position below the button */
+background-color: var(--background);
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+z-index: 1;
+}
+
+.dropdown-option {
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+cursor: pointer;
+}
+
+.dropdown-option:hover {
+background-color: var(--secondary);
+}
+
+.show {
+display: block;
+}
+
+/* Add your card grid styles here */
+.card-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+justify-content: center;
+padding: 20px;
+}
+
+/* Card styles here */
+.card {
+background-color: var(--background);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+border-radius: 8px;
+padding: 20px;
+max-width: 300px;
+text-align: center;
+border: 2px solid var(--primary);
+}
+
+.card-title {
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.card-details {
+font-size: 16px;
+}

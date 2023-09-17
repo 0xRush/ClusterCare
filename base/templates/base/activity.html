@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    <p><strong>ID:</strong> {{activity.id}}</p>
+    <p><strong>date:</strong> {{activity.date|timesince}}</p>
+    <p><strong>latitude:</strong> {{activity.latitude}}</p>
+    <p><strong>longitude:</strong> {{activity.longitude}}</p>
+    <p><strong>population_density:</strong> {{activity.population_density}}</p>
+    <p><strong>crisis_type:</strong> {{activity.crisis_type}}</p>
+    <p><strong>status:</strong> {{activity.status}}</p>
+    <p><strong>num_of_patients</strong>: {{activity.num_of_patients}}</p>
+    <p><strong>weather_status:</strong> {{activity.weather_status}}</p>
+</div>
+<hr>
+<div>
+    <h1>patients</h1>
+    <a href="{% url 'create-patient' %}">Create Patient</a>
+    {% for patient in patients %}
+        <a href="{% url 'patient' patient.id %}"><p><strong>ID:</strong> {{patient.id}}</p></a>
+        <p><strong>medication_date:</strong> {{patient.medication_date}}</p>
+        <hr>
+    {% endfor %}
+</div>
+
+{% endblock %}

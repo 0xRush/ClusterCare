@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'styles/tips.css' %}">
+
+
+<div class="camp-selector">
+    <button id="campDropdownBtn">Select Camp</button>
+    <div id="campDropdownMenu" class="dropdown-menu">
+      <!-- Camp options will be added here dynamically -->
+    </div>
+</div>
+  <div class="card-grid" id="cardGrid">
+    <!-- Cards will be dynamically generated here -->
+</div>
+
+<script src="{% static '/scripts/tips.js' %}"></script>
+
+{% endblock %}

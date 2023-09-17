@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% for mobileclinic in mobileclinics %}
+    <hr>
+    <div>
+       <a href="{% url 'mobileclinic' mobileclinic.id %}"><h1>mobileclinic name: {{mobileclinic.name}}</h2></a>
+        <h2>manager name: {{mobileclinic.manager}}</h2>
+        <p>id: {{mobileclinic.id}}</p>
+    </div>
+    <hr>
+{% endfor %}
+
+{% endblock %}

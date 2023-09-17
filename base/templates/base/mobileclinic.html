@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <hr>
+    <div>
+        <p><strong>Name:</strong> {{mobileclinic.name}}</p>
+        <p><strong>Manager:</strong> {{mobileclinic.manager}}</p>
+        <p><strong>ID:</strong> {{mobileclinic.id}}</p>
+        <p><strong>num_of_staff:</strong> {{mobileclinic.num_of_staff}}</p>
+        <p><strong>clinic_service</strong>: {{mobileclinic.clinic_services}}</p>
+        <p><strong>clinic_capacity:</strong> {{mobileclinic.clinic_capacity}}</p>
+        <p><strong>total_annual_budget:</strong> {{mobileclinic.total_annual_budget}}</p>
+        <p><strong>pharmaceutical_expenditure:</strong> {{mobileclinic.pharmaceutical_expenditure}}</p>
+        <p><strong>pharmaceutical_waste:</strong> {{mobileclinic.pharmaceutical_waste}}</p>
+        <p><strong>created:</strong> {{mobileclinic.created|timesince}}</p>
+    </div>
+    <div>
+        <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
+        <a href="{% url 'create-activity' %}">Add Activity</a>
+        <a href="{% url 'create-resource' %}">Add Resources</a>
+    </div>
+    <hr>
+    <div>
+        <h1>Activities:</h1>
+        {% for activity in activities %}
+            <a href="{% url 'activity' activity.id %}"><p><strong>ID:</strong> {{activity.id}}</p></a>
+            <p><strong>date:</strong> {{activity.date|timesince}}</p>
+            <hr>
+        {% endfor %}
+    </div>
+    <hr>
+    <div>
+        <h1>Resources:</h1>
+        {% for resource in resources %}
+            <a href="{% url 'resource' resource.id %}"><p><strong>ID:</strong> {{resource.id}}</p></a>
+            <p><strong>name:</strong> {{resource.name}}</p>
+            <hr>
+        {% endfor %}
+    </div>
+
+{% endblock %}
