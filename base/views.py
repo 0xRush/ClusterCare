@@ -48,10 +48,21 @@ def updateMobileClinic(request, pk):
         form = MobileclinicForm(request.POST, instance=mobileclinic)
         if form.is_valid():
             form.save()
-            return redirect(f"/mobileclinic/{pk}")
+            return redirect('mobileclinic', pk=mobileclinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
+
+
+def deleteMobileClinic(request, pk):
+    mobileclinic = Mobileclinic.objects.get(id=pk)
+
+    if request.method == 'POST':
+        mobileclinic.delete()
+        return redirect('dashboard')
+    
+    context = {'obj': mobileclinic }
+    return render(request, 'base/delete.html', context)
 
 # this route to show an activity by it's id
 def activity(request, pk):
@@ -67,11 +78,34 @@ def createActivity(request):
     if request.method == 'POST':
         form = ActivityForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+            activity = form.save()
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
+
+def updateActivity(request, pk):
+    activity = Activity.objects.get(id=pk)
+    form = ActivityForm(instance=activity)
+
+    if request.method == 'POST':
+        form = ActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            form.save()
+            return redirect('activity', pk=activity.id)
+        
+    context = {'form': form}
+    return render(request, 'base/mobileclinic_form.html', context)
+
+def deleteActivity(request, pk):
+    activity = Activity.objects.get(id=pk)
+
+    if request.method == 'POST':
+        activity.delete()
+        return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+    
+    context = {'obj': activity}
+    return render(request, 'base/delete.html', context)
 
 # this route to show resource by it's id
 def resource(request, pk):
@@ -86,11 +120,34 @@ def createResource(request):
     if request.method == 'POST':
         form = ResourceForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+            resource = form.save()
+            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
+
+def updateResource(request, pk):
+    resource = Resources.objects.get(id=pk)
+    form = ResourceForm(instance=resource)
+
+    if request.method == 'POST':
+        form = ResourceForm(request.POST, instance=resource)
+        if form.is_valid():
+            form.save()
+            return redirect('resource', pk=resource.id)
+
+    context = {'form': form}
+    return render(request, 'base/mobileclinic_form.html', context)
+
+def deleteResource(request, pk):
+    resource = Resources.objects.get(id=pk)
+
+    if request.method == 'POST':
+        resource.delete()
+        return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+    
+    context = {'obj': resource}
+    return render(request, 'base/delete.html', context)
 
 # this route to show patient by his id
 def patient(request, pk):
@@ -105,10 +162,33 @@ def createPatient(request):
     if request.method == 'POST':
         form = PatientForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+            patient = form.save()
+            return redirect('activity', pk=patient.Activity.id)
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
+
+def updatePatient(request, pk):
+    patient = Patient.objects.get(id=pk)
+    form = PatientForm(instance=patient)
+
+    if request.method == 'POST':
+        form = PatientForm(request.POST, instance=patient)
+        if form.is_valid():
+            form.save()
+            return redirect('patient', pk=patient.id)
+
+    context = {'form': form}
+    return render(request, 'base/mobileclinic_form.html', context)
+
+def deletePatient(request, pk):
+    patient = Patient.objects.get(id=pk)
+
+    if request.method == 'POST':
+        patient.delete()
+        return redirect('activity', pk=patient.Activity.id)
+    
+    context = {'obj': patient}
+    return render(request, 'base/delete.html', context)
 
 

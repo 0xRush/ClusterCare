@@ -3,6 +3,8 @@
 {% block content %}
 
 <div>
+    <a href="{% url 'update-activity' activity.id %}">Edit Activity</a>
+    <a href="{% url 'delete-activity' activity.id %}">delete Activity</a>
     <p><strong>ID:</strong> {{activity.id}}</p>
     <p><strong>date:</strong> {{activity.date|timesince}}</p>
     <p><strong>latitude:</strong> {{activity.latitude}}</p>

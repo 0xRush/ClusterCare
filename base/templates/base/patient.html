@@ -3,6 +3,8 @@
 {% block content %}
 
 <div>
+    <a href="{% url 'update-patient' patient.id %}">Edit Patient</a>
+    <a href="{% url 'delete-patient' patient.id %}">delete Patient</a>
     <p><strong>ID: </strong>{{patient.id}}</p>
     <p><strong>age:</strong> {{patient.age}}</p>
     <p><strong>gender:</strong> {{patient.gender}}</p>

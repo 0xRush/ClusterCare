@@ -3,6 +3,8 @@
 {% block content %}
 
 <div>
+    <a href="{% url 'update-resource' resource.id %}">edit resource</a>
+    <a href="{% url 'delete-resource' resource.id %}">delete Resource</a>
     <p><strong>ID:</strong> {{resource.id}}</p>
     <p><strong>name:</strong> {{resource.name}}</p>
     <p><strong>type:</strong> {{resource.type}}</p>
