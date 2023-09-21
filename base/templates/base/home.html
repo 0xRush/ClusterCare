@@ -4,11 +4,6 @@
 
 {% block content %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAryW9-xsEF6pV9LvZSR2fAIT_vPFC_BHA&callback=initializeMap" defer></script>
-<script src="{% static '/scripts/googleMap.js' %}"></script>
-
-<div id="map"></div>
-  <!-- Add a card popup container -->
-<div class="card-popup" id="cardPopup"></div>
+{{ map|safe }}
 
 {% endblock %}

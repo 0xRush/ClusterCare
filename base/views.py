@@ -2,11 +2,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Mobileclinic, Activity, Resources, Patient
 from .forms import MobileclinicForm, ActivityForm, ResourceForm, PatientForm
+import folium
+from folium.plugins import MarkerCluster
 
 
 # Create your views here.
 def home(request):
-    return render(request, 'base/home.html')
+    activities = Activity.objects.select_related('mobile_clinic').all()
+    
+    Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
+    marker_cluster = MarkerCluster().add_to(Map)
+
+    for activity in activities:
+        folium.Marker(
+            location=[activity.latitude, activity.longitude],
+            popup=f"<a href=mobileclinic/{activity.mobile_clinic.id} target=_blank>{activity.mobile_clinic.name}</a>",
+            icon=folium.Icon(color="green", icon="ok-sign"),
+        ).add_to(marker_cluster)
+
+    context = {'activities': activities, 'map': Map._repr_html_()}
+    return render(request, 'base/home.html', context)
 
 # this route to show statistics for mobile clinic
 def tips(request):
