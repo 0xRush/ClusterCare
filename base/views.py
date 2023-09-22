@@ -16,7 +16,7 @@ def home(request):
     for activity in activities:
         folium.Marker(
             location=[activity.latitude, activity.longitude],
-            popup=f"<a href=mobileclinic/{activity.mobile_clinic.id} target=_blank>{activity.mobile_clinic.name}</a>",
+            popup=f"<a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a>",
             icon=folium.Icon(color="green", icon="ok-sign"),
         ).add_to(marker_cluster)
 
