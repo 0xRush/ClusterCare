@@ -19,10 +19,11 @@
     </ul>
     <div class="navbar-right">
         {% if request.user.is_authenticated %}
+            <span>Hello {{user}}</span>
             <a href="{% url 'logout' %}" class="profile-link">Logout</a>
         {% else %}
             <a href="{% url 'login' %}" class="profile-link">Login</a>
-            <a href="#" class="profile-link">Register</a>
+            <a href="{% url 'register' %}" class="profile-link">Register</a>
         {% endif %}
     </div>
 </div>

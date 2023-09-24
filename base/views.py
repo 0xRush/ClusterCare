@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from .models import Mobileclinic, Activity, Resources, Patient
 from .forms import MobileclinicForm, ActivityForm, ResourceForm, PatientForm
 import folium
@@ -12,9 +13,13 @@ from folium.plugins import MarkerCluster
 
 # Create your views here.
 def loginPage(request):
+    page = 'login'
+
+    if request.user.is_authenticated:
+        return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -30,12 +35,29 @@ def loginPage(request):
         else:
             messages.error(request, "Usernme OR Password does not exist")
 
-    context = {}
+    context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def registerPage(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'An error occurred during registeration')
+
+    context = {'form':form}
+    return render(request, 'base/login_register.html', context)
 
 
 def home(request):
@@ -96,7 +118,8 @@ def updateMobileClinic(request, pk):
     form = MobileclinicForm(instance=mobileclinic)
 
     if request.user != mobileclinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         form = MobileclinicForm(request.POST, instance=mobileclinic)
@@ -112,7 +135,8 @@ def deleteMobileClinic(request, pk):
     mobileclinic = Mobileclinic.objects.get(id=pk)
 
     if request.user != mobileclinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         mobileclinic.delete()
@@ -137,8 +161,13 @@ def createActivity(request):
     if request.method == 'POST':
         form = ActivityForm(request.POST)
         if form.is_valid():
-            activity = form.save()
-            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+            activity = form.save(commit=False)
+            if request.user != activity.mobile_clinic.manager:
+                messages.error(request, 'you are not allowed here')
+                return redirect('home')
+            else:
+                activity.save()
+                return redirect('mobileclinic', pk=activity.mobile_clinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -149,7 +178,8 @@ def updateActivity(request, pk):
     form = ActivityForm(instance=activity)
 
     if request.user != activity.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         form = ActivityForm(request.POST, instance=activity)
@@ -165,7 +195,8 @@ def deleteActivity(request, pk):
     activity = Activity.objects.get(id=pk)
 
     if request.user != activity.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         activity.delete()
@@ -189,8 +220,13 @@ def createResource(request):
     if request.method == 'POST':
         form = ResourceForm(request.POST)
         if form.is_valid():
-            resource = form.save()
-            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+            resource = form.save(commit=False)
+            if request.user != resource.mobile_clinic.manager:
+                messages.error(request, 'you are not allowed here')
+                return redirect('home')
+            else:
+                resource.save()
+                return redirect('mobileclinic', pk=resource.mobile_clinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -201,7 +237,8 @@ def updateResource(request, pk):
     form = ResourceForm(instance=resource)
 
     if request.user != resource.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
     
     if request.method == 'POST':
         form = ResourceForm(request.POST, instance=resource)
@@ -217,7 +254,8 @@ def deleteResource(request, pk):
     resource = Resources.objects.get(id=pk)
 
     if request.user != resource.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         resource.delete()
@@ -241,8 +279,13 @@ def createPatient(request):
     if request.method == 'POST':
         form = PatientForm(request.POST)
         if form.is_valid():
-            patient = form.save()
-            return redirect('activity', pk=patient.Activity.id)
+            patient = form.save(commit=False)
+            if request.user != patient.Activity.mobile_clinic.manager:
+                messages.error(request, 'you are not allowed here')
+                return redirect('home')
+            else:
+                patient.save()
+                return redirect('activity', pk=patient.Activity.id)
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -253,7 +296,8 @@ def updatePatient(request, pk):
     form = PatientForm(instance=patient)
 
     if request.user != patient.Activity.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         form = PatientForm(request.POST, instance=patient)
@@ -269,7 +313,8 @@ def deletePatient(request, pk):
     patient = Patient.objects.get(id=pk)
 
     if request.user != patient.Activity.mobile_clinic.manager:
-        return HttpResponse('you are not allowed here')
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
     
     if request.method == 'POST':
         patient.delete()
