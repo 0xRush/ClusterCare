@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from .models import Mobileclinic, Activity, Resources, Patient
 from .forms import MobileclinicForm, ActivityForm, ResourceForm, PatientForm
 import folium
@@ -7,6 +11,33 @@ from folium.plugins import MarkerCluster
 
 
 # Create your views here.
+def loginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, "User does not exist")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Usernme OR Password does not exist")
+
+    context = {}
+    return render(request, 'base/login_register.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
+
 def home(request):
     activities = Activity.objects.select_related('mobile_clinic').all()
     
@@ -24,16 +55,19 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 # this route to show statistics for mobile clinic
+@login_required(login_url='login')
 def tips(request):
     return render(request, 'base/tips.html')
 
 # this route to all mobile clinics
+@login_required(login_url='login')
 def dashboard(request):
     mobileclinics = Mobileclinic.objects.all()
     context = {'mobileclinics': mobileclinics}
     return render(request, 'base/dashboard.html', context)
 
 # this route to show a single mobile clinc by it's id
+@login_required(login_url='login')
 def mobileclinic(request, pk):
     mobileclinic = Mobileclinic.objects.get(id=pk)
     activities = Activity.objects.filter(mobile_clinic=mobileclinic)
@@ -42,6 +76,7 @@ def mobileclinic(request, pk):
     return render(request, 'base/mobileclinic.html', context)
 
 # this route create mobile clinic
+@login_required(login_url='login')
 def createMobileClinic(request):
     form = MobileclinicForm()
 
@@ -55,9 +90,13 @@ def createMobileClinic(request):
     return render(request, 'base/mobileclinic_form.html', context)
 
 # this route to update mobile clinic by it's id
+@login_required(login_url='login')
 def updateMobileClinic(request, pk):
     mobileclinic = Mobileclinic.objects.get(id=pk)
     form = MobileclinicForm(instance=mobileclinic)
+
+    if request.user != mobileclinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         form = MobileclinicForm(request.POST, instance=mobileclinic)
@@ -68,9 +107,12 @@ def updateMobileClinic(request, pk):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
-
+@login_required(login_url='login')
 def deleteMobileClinic(request, pk):
     mobileclinic = Mobileclinic.objects.get(id=pk)
+
+    if request.user != mobileclinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         mobileclinic.delete()
@@ -80,6 +122,7 @@ def deleteMobileClinic(request, pk):
     return render(request, 'base/delete.html', context)
 
 # this route to show an activity by it's id
+@login_required(login_url='login')
 def activity(request, pk):
     activity = Activity.objects.get(id=pk)
     patients = Patient.objects.filter(Activity=activity)
@@ -87,6 +130,7 @@ def activity(request, pk):
     return render(request, 'base/activity.html', context)
 
 # this route to create activity
+@login_required(login_url='login')
 def createActivity(request):
     form = ActivityForm()
 
@@ -99,9 +143,13 @@ def createActivity(request):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def updateActivity(request, pk):
     activity = Activity.objects.get(id=pk)
     form = ActivityForm(instance=activity)
+
+    if request.user != activity.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         form = ActivityForm(request.POST, instance=activity)
@@ -112,8 +160,12 @@ def updateActivity(request, pk):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def deleteActivity(request, pk):
     activity = Activity.objects.get(id=pk)
+
+    if request.user != activity.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         activity.delete()
@@ -123,12 +175,14 @@ def deleteActivity(request, pk):
     return render(request, 'base/delete.html', context)
 
 # this route to show resource by it's id
+@login_required(login_url='login')
 def resource(request, pk):
     resource = Resources.objects.get(id=pk)
     context = {'resource': resource}
     return render(request, 'base/resource.html', context)
 
 # this route to ceate resource
+@login_required(login_url='login')
 def createResource(request):
     form = ResourceForm()
 
@@ -141,10 +195,14 @@ def createResource(request):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def updateResource(request, pk):
     resource = Resources.objects.get(id=pk)
     form = ResourceForm(instance=resource)
 
+    if request.user != resource.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
+    
     if request.method == 'POST':
         form = ResourceForm(request.POST, instance=resource)
         if form.is_valid():
@@ -154,8 +212,12 @@ def updateResource(request, pk):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def deleteResource(request, pk):
     resource = Resources.objects.get(id=pk)
+
+    if request.user != resource.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         resource.delete()
@@ -165,12 +227,14 @@ def deleteResource(request, pk):
     return render(request, 'base/delete.html', context)
 
 # this route to show patient by his id
+@login_required(login_url='login')
 def patient(request, pk):
     patient = Patient.objects.get(id=pk)
     context = {'patient':patient}
     return render(request, 'base/patient.html', context)
 
 # this route to create patient 
+@login_required(login_url='login')
 def createPatient(request):
     form = PatientForm()
     
@@ -183,9 +247,13 @@ def createPatient(request):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def updatePatient(request, pk):
     patient = Patient.objects.get(id=pk)
     form = PatientForm(instance=patient)
+
+    if request.user != patient.Activity.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
 
     if request.method == 'POST':
         form = PatientForm(request.POST, instance=patient)
@@ -196,9 +264,13 @@ def updatePatient(request, pk):
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
+@login_required(login_url='login')
 def deletePatient(request, pk):
     patient = Patient.objects.get(id=pk)
 
+    if request.user != patient.Activity.mobile_clinic.manager:
+        return HttpResponse('you are not allowed here')
+    
     if request.method == 'POST':
         patient.delete()
         return redirect('activity', pk=patient.Activity.id)

@@ -41,7 +41,7 @@ class Resources(models.Model):
         return self.name
     
 class Activity(models.Model):
-    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.SET_NULL, null=True) 
+    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE) 
     date = models.DateField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -52,7 +52,11 @@ class Activity(models.Model):
         ("Tornado", "Tornado"),
     )
     crisis_type = models.CharField(max_length=10, choices=Crisis_Type)
-    status = models.CharField(max_length=20)
+    Status = (
+        ("Active", "Active"),
+        ("inActive", "inActive"),
+    )
+    status = models.CharField(max_length=20, choices=Status)
     num_of_patients = models.IntegerField()
     Weather_Status = (
         ("Cloudy", "Cloudy"),
@@ -71,7 +75,11 @@ class Activity(models.Model):
 class Patient(models.Model):
     Activity = models.ForeignKey(Activity, on_delete=models.SET_NULL, null=True)
     age = models.IntegerField()
-    gender = models.CharField(max_length=20)
+    Gender = [
+        ("Male", "Male"),
+        ("Female", "Female"),
+    ]
+    gender = models.CharField(max_length=20, choices=Gender)
     diagnosis = models.TextField()
     medication_date = models.DateField()
 
