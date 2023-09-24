@@ -105,7 +105,9 @@ def createMobileClinic(request):
     if request.method == 'POST':
         form = MobileclinicForm(request.POST)
         if form.is_valid():
-            form.save()
+            mobileclinic = form.save(commit=False)
+            mobileclinic.manager = request.user
+            mobileclinic.save()
             return redirect('dashboard')
 
     context = {'form': form}
