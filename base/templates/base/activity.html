@@ -3,8 +3,10 @@
 {% block content %}
 
 <div>
-    <a href="{% url 'update-activity' activity.id %}">Edit Activity</a>
-    <a href="{% url 'delete-activity' activity.id %}">delete Activity</a>
+    {% if request.user == activity.mobile_clinic.manager %}
+        <a href="{% url 'update-activity' activity.id %}">Edit Activity</a>
+        <a href="{% url 'delete-activity' activity.id %}">delete Activity</a>
+    {% endif %}
     <p><strong>ID:</strong> {{activity.id}}</p>
     <p><strong>date:</strong> {{activity.date|timesince}}</p>
     <p><strong>latitude:</strong> {{activity.latitude}}</p>
@@ -18,7 +20,9 @@
 <hr>
 <div>
     <h1>patients</h1>
-    <a href="{% url 'create-patient' %}">Create Patient</a>
+    {% if request.user == activity.mobile_clinic.manager %}
+        <a href="{% url 'create-patient' %}">Create Patient</a> 
+    {% endif %}
     {% for patient in patients %}
         <a href="{% url 'patient' patient.id %}"><p><strong>ID:</strong> {{patient.id}}</p></a>
         <p><strong>medication_date:</strong> {{patient.medication_date}}</p>

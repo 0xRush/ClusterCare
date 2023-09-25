@@ -16,10 +16,12 @@
         <p><strong>created:</strong> {{mobileclinic.created|timesince}}</p>
     </div>
     <div>
-        <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
-        <a href="{% url 'create-activity' %}">Add Activity</a>
-        <a href="{% url 'create-resource' %}">Add Resources</a>
-        <a href="{% url 'delete-mobileclinic' mobileclinic.id %}">delete Mobileclinic</a>
+        {% if request.user == mobileclinic.manager %}
+            <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
+            <a href="{% url 'create-activity' %}">Add Activity</a>
+            <a href="{% url 'create-resource' %}">Add Resources</a>
+            <a href="{% url 'delete-mobileclinic' mobileclinic.id %}">delete Mobileclinic</a>
+        {% endif %}
     </div>
     <hr>
     <div>

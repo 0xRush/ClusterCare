@@ -4,7 +4,8 @@ from .models import Mobileclinic, Activity, Resources, Patient
 class MobileclinicForm(ModelForm):
     class Meta:
         model = Mobileclinic
-        fields = '__all__'
+        fields = ['name', 'num_of_staff', 'clinic_services', 'clinic_capacity',
+                  'total_annual_budget', 'pharmaceutical_expenditure', 'pharmaceutical_waste']
 
 class ActivityForm(ModelForm):
     class Meta:
