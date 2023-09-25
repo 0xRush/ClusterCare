@@ -62,6 +62,7 @@ def registerPage(request):
 
 def home(request):
     activities = Activity.objects.select_related('mobile_clinic').all()
+    mobileclinics = Mobileclinic.objects.all()
     
     Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     marker_cluster = MarkerCluster().add_to(Map)
@@ -73,7 +74,7 @@ def home(request):
             icon=folium.Icon(color="green", icon="ok-sign"),
         ).add_to(marker_cluster)
 
-    context = {'activities': activities, 'map': Map._repr_html_()}
+    context = {'mobileclinics': mobileclinics, 'activities': activities, 'map': Map._repr_html_()}
     return render(request, 'base/home.html', context)
 
 # this route to show statistics for mobile clinic

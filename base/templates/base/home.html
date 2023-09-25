@@ -1,9 +1,15 @@
 {% extends 'main.html' %}
 
-{% load static %}
-
 {% block content %}
 
 {{ map|safe }}
+
+<hr>
+
+{% for mobileclinic in mobileclinics %}
+    <a href="{% url 'mobileclinic' mobileclinic.id %}"><h1>mobileclinic name: {{mobileclinic.name}}</h2></a>
+    <h2>manager name: {{mobileclinic.manager}}</h2>
+    <hr>
+{% endfor %}
 
 {% endblock %}
