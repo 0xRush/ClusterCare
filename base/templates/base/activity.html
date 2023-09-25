@@ -21,7 +21,7 @@
 <div>
     <h1>patients</h1>
     {% if request.user == activity.mobile_clinic.manager %}
-        <a href="{% url 'create-patient' %}">Create Patient</a> 
+        <a href="{% url 'create-patient' activity.id %}">Create Patient</a> 
     {% endif %}
     {% for patient in patients %}
         <a href="{% url 'patient' patient.id %}"><p><strong>ID:</strong> {{patient.id}}</p></a>

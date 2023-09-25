@@ -157,13 +157,14 @@ def activity(request, pk):
 
 # this route to create activity
 @login_required(login_url='login')
-def createActivity(request):
+def createActivity(request, fk):
     form = ActivityForm()
 
     if request.method == 'POST':
         form = ActivityForm(request.POST)
         if form.is_valid():
             activity = form.save(commit=False)
+            activity.mobile_clinic = Mobileclinic.objects.get(id=fk)
             if request.user != activity.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')
                 return redirect('home')
@@ -216,13 +217,14 @@ def resource(request, pk):
 
 # this route to ceate resource
 @login_required(login_url='login')
-def createResource(request):
+def createResource(request, fk):
     form = ResourceForm()
 
     if request.method == 'POST':
         form = ResourceForm(request.POST)
         if form.is_valid():
             resource = form.save(commit=False)
+            resource.mobile_clinic = Mobileclinic.objects.get(id=fk)
             if request.user != resource.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')
                 return redirect('home')
@@ -275,13 +277,14 @@ def patient(request, pk):
 
 # this route to create patient 
 @login_required(login_url='login')
-def createPatient(request):
+def createPatient(request, fk):
     form = PatientForm()
     
     if request.method == 'POST':
         form = PatientForm(request.POST)
         if form.is_valid():
             patient = form.save(commit=False)
+            patient.Activity = Activity.objects.get(id=fk)
             if request.user != patient.Activity.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')
                 return redirect('home')

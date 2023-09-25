@@ -10,14 +10,15 @@ class MobileclinicForm(ModelForm):
 class ActivityForm(ModelForm):
     class Meta:
         model = Activity
-        fields = '__all__'
+        fields = ['date', 'latitude', 'longitude', 'population_density', 'crisis_type', 
+                  'status', 'num_of_patients', 'weather_status']
 
 class ResourceForm(ModelForm):
     class Meta:
         model = Resources
-        fields = '__all__'
+        fields = ['name', 'type', 'expiration_date', 'quantity']
 
 class PatientForm(ModelForm):
     class Meta:
         model = Patient
-        fields = '__all__'
+        fields = ['age', 'gender', 'diagnosis', 'medication_date']

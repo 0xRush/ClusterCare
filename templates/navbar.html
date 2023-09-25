@@ -3,18 +3,20 @@
         <img src="logo.png" alt="Logo" class="navbar-logo" />
     </div>
     <ul class="navbar-menu">
-        <li class="navbar-menu-item">
-            <a href="{% url 'home' %}">Home</a>
-        </li>
-        <li class="navbar-menu-item">
-            <a href="{% url 'tips' %}">Tips</a>
-        </li>
-        <li class="navbar-menu-item">
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        <li class="navbar-menu-item">
-            <a href="{% url 'create-mobileclinic' %}">Create mobileClinic</a>
-        </li>
+        {% if request.user.is_authenticated %}
+            <li class="navbar-menu-item">
+                <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="navbar-menu-item">
+                <a href="{% url 'tips' %}">Tips</a>
+            </li>
+            <li class="navbar-menu-item">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            <li class="navbar-menu-item">
+                <a href="{% url 'create-mobileclinic' %}">Create mobileClinic</a>
+            </li>
+        {% endif %}
     <!-- Add more menu items here -->
     </ul>
     <div class="navbar-right">
