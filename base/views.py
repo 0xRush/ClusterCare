@@ -68,11 +68,12 @@ def home(request):
     marker_cluster = MarkerCluster().add_to(Map)
 
     for activity in activities:
-        folium.Marker(
-            location=[activity.latitude, activity.longitude],
-            popup=f"<a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a>",
-            icon=folium.Icon(color="green", icon="ok-sign"),
-        ).add_to(marker_cluster)
+        if activity.status == 'Active':
+            folium.Marker(
+                location=[activity.latitude, activity.longitude],
+                popup=f"<a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a>",
+                icon=folium.Icon(color="green", icon="ok-sign"),
+            ).add_to(marker_cluster)
 
     context = {'mobileclinics': mobileclinics, 'activities': activities, 'map': Map._repr_html_()}
     return render(request, 'base/home.html', context)
@@ -164,8 +165,15 @@ def createActivity(request, fk):
     if request.method == 'POST':
         form = ActivityForm(request.POST)
         if form.is_valid():
+            mobileclinic = Mobileclinic.objects.get(id=fk)
+            oldActivities = Activity.objects.filter(mobile_clinic=mobileclinic)
+            for oldActivity in oldActivities:
+                oldActivity.status = 'inActive'
+                oldActivity.save()
+
             activity = form.save(commit=False)
-            activity.mobile_clinic = Mobileclinic.objects.get(id=fk)
+            activity.status = 'Active'
+            activity.mobile_clinic = mobileclinic
             if request.user != activity.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')
                 return redirect('home')

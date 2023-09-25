@@ -11,7 +11,7 @@ class ActivityForm(ModelForm):
     class Meta:
         model = Activity
         fields = ['date', 'latitude', 'longitude', 'population_density', 'crisis_type', 
-                  'status', 'num_of_patients', 'weather_status']
+                  'num_of_patients', 'weather_status']
 
 class ResourceForm(ModelForm):
     class Meta:
