@@ -166,10 +166,13 @@ def createActivity(request, fk):
         form = ActivityForm(request.POST)
         if form.is_valid():
             mobileclinic = Mobileclinic.objects.get(id=fk)
-            oldActivity = Activity.objects.get(mobile_clinic=mobileclinic, status='Active')
-            oldActivity.status = 'inActive'
-            oldActivity.save()
-
+            try:
+                oldActivity = Activity.objects.get(mobile_clinic=mobileclinic, status='Active')
+                oldActivity.status = 'inActive'
+                oldActivity.save()
+            except:
+                print('no activity found')
+                
             activity = form.save(commit=False)
             activity.status = 'Active'
             activity.mobile_clinic = mobileclinic
