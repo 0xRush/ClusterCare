@@ -4,6 +4,7 @@
 
 <div>
     {% if request.user == resource.mobile_clinic.manager %}
+        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
         <a href="{% url 'update-resource' resource.id %}">edit resource</a>
         <a href="{% url 'delete-resource' resource.id %}">delete Resource</a>
     {% endif %}

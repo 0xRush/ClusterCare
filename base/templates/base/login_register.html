@@ -31,5 +31,5 @@
         <a href="{% url 'login' %}">Login</a>
     </div>
 {% endif %}
-
+<a href="{{request.META.HTTP_REFERER}}">Go Back</a>
 {% endblock %}
