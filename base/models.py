@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from mongodb_connection import db
 
 
 # Create your models here.
@@ -86,3 +87,6 @@ class Patient(models.Model):
     def __str__(self):
         return self.diagnosis[0:50]
 
+HistoricalActivity = db['Historical_activity']
+
+PredictionActivity = db['Predition_Activity']
