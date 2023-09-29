@@ -26,7 +26,7 @@ def seed():
                         # from activity
                         'num_of_patients': activity.num_of_patients,
                         'zone': zone,
-                        # 'date': activity.date,
+                        'date': f'{activity.date}',
                         'population_density': activity.population_density,
                         'crisis_type': activity.crisis_type,
                         # from patient

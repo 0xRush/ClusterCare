@@ -4,5 +4,5 @@ from .seeding_DB import seed
 
 def start():
 	scheduler = BackgroundScheduler()
-	scheduler.add_job(seed, 'interval', seconds=5)
+	scheduler.add_job(seed, 'interval', days=1)
 	scheduler.start()
