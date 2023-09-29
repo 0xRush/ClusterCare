@@ -1,7 +1,13 @@
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
-from .models import Mobileclinic, Activity, Resources, Patient
+from django.contrib.auth.forms import UserCreationForm
+from .models import Mobileclinic, Activity, Resources, Patient, User
 import datetime
+
+class MyUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'email', 'password1', 'password2']
 
 class MobileclinicForm(ModelForm):
     class Meta:
