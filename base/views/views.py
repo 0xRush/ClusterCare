@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
-from ..models import Mobileclinic, Activity
+from ..models import Mobileclinic, Activity, User
+from ..forms import MyUserCreationForm
 import folium
 from folium.plugins import MarkerCluster
 
@@ -40,10 +39,10 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-    form = UserCreationForm()
+    form = MyUserCreationForm()
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
