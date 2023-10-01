@@ -2,10 +2,15 @@
 
 {% block content %}
 
+<a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+
 <form action="" method="POST">
     {% csrf_token %}
     {{form.as_p}}
     <button>Submit</button>
 </form>
-<a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+{% if page == 'createActivity' %}
+        {{ map|safe}}
+{% endif %}
+
 {% endblock %}

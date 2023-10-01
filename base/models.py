@@ -44,6 +44,8 @@ class Resources(models.Model):
     type = models.CharField(max_length=10, choices=Type) 
     expiration_date = models.DateField()
     quantity = models.IntegerField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -72,6 +74,8 @@ class Activity(models.Model):
         ("Rainy", "Rainy"),
     )
     weather_status = models.CharField(max_length=10, choices=Weather_Status)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def location (self):
         loc = self.latitude +',' + self.longitude
@@ -90,7 +94,9 @@ class Patient(models.Model):
     gender = models.CharField(max_length=20, choices=Gender)
     diagnosis = models.TextField()
     medication_date = models.DateField()
-
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return self.diagnosis[0:50]
 
