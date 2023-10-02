@@ -1,8 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from mongodb_connection import db
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+class User(AbstractUser):
+    name = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=200, unique=True)
+    email = models.EmailField(unique=True)
+
+    REQUIRED_FIELDS = []
+
+
 class Mobileclinic(models.Model):
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True) 
     name = models.CharField(max_length=200)
@@ -41,7 +49,7 @@ class Resources(models.Model):
         return self.name
     
 class Activity(models.Model):
-    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.SET_NULL, null=True) 
+    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE) 
     date = models.DateField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -52,7 +60,11 @@ class Activity(models.Model):
         ("Tornado", "Tornado"),
     )
     crisis_type = models.CharField(max_length=10, choices=Crisis_Type)
-    status = models.CharField(max_length=20)
+    Status = (
+        ("Active", "Active"),
+        ("inActive", "inActive"),
+    )
+    status = models.CharField(max_length=20, choices=Status)
     num_of_patients = models.IntegerField()
     Weather_Status = (
         ("Cloudy", "Cloudy"),
@@ -71,10 +83,17 @@ class Activity(models.Model):
 class Patient(models.Model):
     Activity = models.ForeignKey(Activity, on_delete=models.SET_NULL, null=True)
     age = models.IntegerField()
-    gender = models.CharField(max_length=20)
+    Gender = [
+        ("Male", "Male"),
+        ("Female", "Female"),
+    ]
+    gender = models.CharField(max_length=20, choices=Gender)
     diagnosis = models.TextField()
     medication_date = models.DateField()
 
     def __str__(self):
         return self.diagnosis[0:50]
 
+HistoricalActivity = db['Historical_activity']
+
+PredictionActivity = db['Predition_Activity']

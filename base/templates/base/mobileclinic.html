@@ -16,10 +16,13 @@
         <p><strong>created:</strong> {{mobileclinic.created|timesince}}</p>
     </div>
     <div>
-        <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
-        <a href="{% url 'create-activity' %}">Add Activity</a>
-        <a href="{% url 'create-resource' %}">Add Resources</a>
-        <a href="{% url 'delete-mobileclinic' mobileclinic.id %}">delete Mobileclinic</a>
+        {% if request.user == mobileclinic.manager %}
+            <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+            <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
+            <a href="{% url 'create-activity' mobileclinic.id %}">Add Activity</a>
+            <a href="{% url 'create-resource' mobileclinic.id %}">Add Resources</a>
+            <a href="{% url 'delete-mobileclinic' mobileclinic.id %}">delete Mobileclinic</a>
+        {% endif %}
     </div>
     <hr>
     <div>

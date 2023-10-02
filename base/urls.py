@@ -1,28 +1,33 @@
 from django.urls import path
-from . import views
+from .views import views, clinicViews, activityViews, resourceViews, patientViews
+
+
 
 urlpatterns = [
+    path('login/', views.loginPage, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
+    path('register/', views.registerPage, name='register'),
     path('', views.home, name='home'),
-    path('tips/', views.tips, name='tips'),
-    path('dashboard/', views.dashboard, name='dashboard'),
 
-    path('mobileclinic/<str:pk>', views.mobileclinic, name='mobileclinic'),
-    path('create-mobileclinic/', views.createMobileClinic, name='create-mobileclinic'),
-    path('update-mobileclinic/<str:pk>', views.updateMobileClinic, name='update-mobileclinic'),
-    path('delete-mobileclinic/<str:pk>', views.deleteMobileClinic, name='delete-mobileclinic'),
+    path('tips/', clinicViews.tips, name='tips'),
+    path('dashboard/', clinicViews.dashboard, name='dashboard'),
+    path('mobileclinic/<str:pk>', clinicViews.mobileclinic, name='mobileclinic'),
+    path('create-mobileclinic/', clinicViews.createMobileClinic, name='create-mobileclinic'),
+    path('update-mobileclinic/<str:pk>', clinicViews.updateMobileClinic, name='update-mobileclinic'),
+    path('delete-mobileclinic/<str:pk>', clinicViews.deleteMobileClinic, name='delete-mobileclinic'),
 
-    path('activity/<str:pk>', views.activity, name='activity'),
-    path('create-activity/', views.createActivity, name='create-activity'),
-    path('update-activity/<str:pk>', views.updateActivity, name='update-activity'),
-    path('delete-activity/<str:pk>', views.deleteActivity, name='delete-activity'),
+    path('activity/<str:pk>', activityViews.activity, name='activity'),
+    path('mobileclinic/<str:fk>/create-activity/', activityViews.createActivity, name='create-activity'),
+    path('update-activity/<str:pk>', activityViews.updateActivity, name='update-activity'),
+    path('delete-activity/<str:pk>', activityViews.deleteActivity, name='delete-activity'),
 
-    path('resource/<str:pk>', views.resource, name='resource'),
-    path('create-resource/', views.createResource, name='create-resource'),
-    path('update-resource/<str:pk>', views.updateResource, name='update-resource'),
-    path('delete-resource/<str:pk>', views.deleteResource, name='delete-resource'),
+    path('resource/<str:pk>', resourceViews.resource, name='resource'),
+    path('mobileclinic/<str:fk>/create-resource/', resourceViews.createResource, name='create-resource'),
+    path('update-resource/<str:pk>', resourceViews.updateResource, name='update-resource'),
+    path('delete-resource/<str:pk>', resourceViews.deleteResource, name='delete-resource'),
 
-    path('patient/<str:pk>', views.patient, name='patient'),
-    path('create-patient/', views.createPatient, name='create-patient'),
-    path('update-patient/<str:pk>', views.updatePatient, name='update-patient'),
-    path('delete-patient/<str:pk>', views.deletePatient, name='delete-patient'),
+    path('patient/<str:pk>', patientViews.patient, name='patient'),
+    path('activity/<str:fk>/create-patient/', patientViews.createPatient, name='create-patient'),
+    path('update-patient/<str:pk>', patientViews.updatePatient, name='update-patient'),
+    path('delete-patient/<str:pk>', patientViews.deletePatient, name='delete-patient'),
 ]
