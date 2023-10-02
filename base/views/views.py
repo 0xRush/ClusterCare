@@ -6,6 +6,7 @@ from ..models import Mobileclinic, Activity, User
 from ..forms import MyUserCreationForm
 import folium
 from folium.plugins import MarkerCluster
+from branca.element import Figure
 
 # Create your views here.
 def loginPage(request):
@@ -57,12 +58,14 @@ def registerPage(request):
 
 
 def home(request):
-    activities = Activity.objects.select_related('mobile_clinic').all()
+    activities = Activity.objects.all()
     mobileclinics = Mobileclinic.objects.all()
-    
-    Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
-    marker_cluster = MarkerCluster().add_to(Map)
 
+    fig = Figure(height=400)
+    Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5, height=500)
+    fig.add_child(Map)
+    marker_cluster = MarkerCluster().add_to(Map)
+    
     for activity in activities:
         if activity.status == 'Active':
             folium.Marker(

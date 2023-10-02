@@ -23,7 +23,7 @@ def createActivity(request, fk):
 
     page = 'createActivity'
 
-    map = folium.Map(location=[23.8859, 45.0792], zoom_start=5, width=500, height=500)
+    map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     map.add_child(folium.LatLngPopup())
     folium_static(map)
 
