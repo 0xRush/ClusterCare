@@ -67,6 +67,7 @@ class Activity(models.Model):
         ("inActive", "inActive"),
     )
     status = models.CharField(max_length=20, choices=Status)
+    # should caleculated from the patients model
     num_of_patients = models.IntegerField()
     Weather_Status = (
         ("Cloudy", "Cloudy"),
