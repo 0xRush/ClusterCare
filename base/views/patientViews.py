@@ -21,11 +21,14 @@ def createPatient(request, fk):
         form = PatientForm(request.POST)
         if form.is_valid():
             patient = form.save(commit=False)
-            patient.Activity = Activity.objects.get(id=fk)
+            activity = Activity.objects.get(id=fk)
+            activity.num_of_patients += 1
+            patient.Activity = activity
             if request.user != patient.Activity.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')
                 return redirect('home')
             else:
+                activity.save()
                 patient.save()
                 return redirect('activity', pk=patient.Activity.id)
         

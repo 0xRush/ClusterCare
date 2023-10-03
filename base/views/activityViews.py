@@ -41,6 +41,7 @@ def createActivity(request, fk):
                 
             activity = form.save(commit=False)
             activity.status = 'Active'
+            activity.num_of_patients = 0
             activity.mobile_clinic = mobileclinic
             if request.user != activity.mobile_clinic.manager:
                 messages.error(request, 'you are not allowed here')

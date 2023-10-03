@@ -27,7 +27,7 @@ class MobileclinicForm(ModelForm):
     class Meta:
         model = Mobileclinic
         fields = ['name', 'num_of_staff', 'clinic_services', 'clinic_capacity',
-                  'total_annual_budget', 'pharmaceutical_expenditure', 'pharmaceutical_waste']
+                  'total_annual_budget', 'pharmaceutical_expenditure']
         widgets = {
             'name': forms.widgets.TextInput(attrs={"placeholder":"Enter your Name",
                   "class": "form-control"}),
@@ -36,21 +36,19 @@ class MobileclinicForm(ModelForm):
             'clinic_capacity': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'total_annual_budget': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'pharmaceutical_expenditure': forms.widgets.NumberInput(attrs={"class": "form-control"}),
-            'pharmaceutical_waste': forms.widgets.NumberInput(attrs={"class": "form-control"}),
         }
 
 class ActivityForm(ModelForm):
     class Meta:
         model = Activity
         fields = ['date', 'latitude', 'longitude', 'population_density', 'crisis_type', 
-                  'num_of_patients', 'weather_status']
+                  'weather_status']
         widgets = {
             'date': forms.widgets.DateInput(attrs={"class": "form-control", "type": "date"}),
             'latitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'longitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'population_density': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'crisis_type': forms.widgets.Select(attrs={"class": "form-control"}),
-            'num_of_patients': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'weather_status': forms.widgets.Select(attrs={"class": "form-control"}),
         }
     
