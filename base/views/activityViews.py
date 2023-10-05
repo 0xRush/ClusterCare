@@ -20,8 +20,12 @@ def activity(request, pk):
 @login_required(login_url='login')
 def createActivity(request, fk):
     form = ActivityForm()
-
+    mobileclinic = Mobileclinic.objects.get(id=fk)
     page = 'createActivity'
+
+    if request.user != mobileclinic.manager:
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     map.add_child(folium.LatLngPopup())
@@ -31,7 +35,6 @@ def createActivity(request, fk):
         form = ActivityForm(request.POST)
         
         if form.is_valid():
-            mobileclinic = Mobileclinic.objects.get(id=fk)
             try:
                 oldActivity = Activity.objects.get(mobile_clinic=mobileclinic, status='Active')
                 oldActivity.status = 'inActive'
@@ -43,12 +46,8 @@ def createActivity(request, fk):
             activity.status = 'Active'
             activity.num_of_patients = 0
             activity.mobile_clinic = mobileclinic
-            if request.user != activity.mobile_clinic.manager:
-                messages.error(request, 'you are not allowed here')
-                return redirect('home')
-            else:
-                activity.save()
-                return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+            activity.save()
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
     
     context = {'form': form, 'map':map._repr_html_(), 'page': page}
     return render(request, 'base/mobileclinic_form.html', context)

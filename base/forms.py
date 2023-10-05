@@ -5,6 +5,7 @@ from .models import Mobileclinic, Activity, Resources, Patient, User
 import datetime
 from django import forms
 
+
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
@@ -76,6 +77,7 @@ class ResourceForm(ModelForm):
 
         if expiration_date <= datetime.date.today():
             raise ValidationError("The expiration date can not be in the past")
+            
 
 class PatientForm(ModelForm):
     class Meta:

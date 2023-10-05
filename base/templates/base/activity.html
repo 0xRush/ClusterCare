@@ -6,7 +6,7 @@
     {% if request.user == activity.mobile_clinic.manager %}
         <a href="{% url 'update-activity' activity.id %}">Edit Activity</a>
         <a href="{% url 'delete-activity' activity.id %}">delete Activity</a>
-        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+        <a href="{% url 'mobileclinic' activity.mobile_clinic.id %}">Go Back</a>
     {% endif %}
     <p><strong>ID:</strong> {{activity.id}}</p>
     <p><strong>date:</strong> {{activity.date|timesince}}</p>

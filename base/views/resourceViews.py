@@ -16,18 +16,19 @@ def resource(request, pk):
 @login_required(login_url='login')
 def createResource(request, fk):
     form = ResourceForm()
+    mobileclinic = Mobileclinic.objects.get(id=fk)
+
+    if request.user != mobileclinic.manager:
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
 
     if request.method == 'POST':
         form = ResourceForm(request.POST)
         if form.is_valid():
             resource = form.save(commit=False)
-            resource.mobile_clinic = Mobileclinic.objects.get(id=fk)
-            if request.user != resource.mobile_clinic.manager:
-                messages.error(request, 'you are not allowed here')
-                return redirect('home')
-            else:
-                resource.save()
-                return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+            resource.mobile_clinic = mobileclinic
+            resource.save()
+            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
