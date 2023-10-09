@@ -7,12 +7,14 @@
         {% if page == 'createActivity' %}
             {{ map|safe}}
         {% endif %}
-        <form action="" method="POST">
+        <form action="" method="POST" class="mb-3">
             {% csrf_token %}
             {{form.as_p}}
-            <button>Submit</button>
+            <div class="d-grid gap-2">
+                <button class="btn btn-success">Submit</button>
+            </div>
         </form>
-        <a href="{{request.META.HTTP_REFERER}}" class="text-center">Go Back</a>
+        <a href="{{request.META.HTTP_REFERER}}" class="text-center"><button class="btn btn-primary">Go Back</button></a>
     </div>
 </div>
 
