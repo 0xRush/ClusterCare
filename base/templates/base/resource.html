@@ -2,17 +2,28 @@
 
 {% block content %}
 
-<div>
-    {% if request.user == resource.mobile_clinic.manager %}
-        <a href="{% url 'mobileclinic' resource.mobile_clinic.id %}">Go Back</a>
-        <a href="{% url 'update-resource' resource.id %}">edit resource</a>
-        <a href="{% url 'delete-resource' resource.id %}">delete Resource</a>
-    {% endif %}
-    <p><strong>ID:</strong> {{resource.id}}</p>
-    <p><strong>name:</strong> {{resource.name}}</p>
-    <p><strong>type:</strong> {{resource.type}}</p>
-    <p><strong>expiration_date:</strong> {{resource.expiration_date}}</p>
-    <p><strong>quantity:</strong> {{resource.quantity}}</p>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card my-5">
+            <div class="card-body">
+                <h5 class="card-title">Name: {{resource.name}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Type:</strong> {{resource.type}}</li>
+                <li class="list-group-item"><strong>Expiration_date:</strong> {{resource.expiration_date}}</li>
+                <li class="list-group-item"><strong>Quantity:</strong> {{resource.quantity}}</li>
+            </ul>
+            {% if request.user == resource.mobile_clinic.manager %}
+            <div class="card-body text-center">
+                <a href="{% url 'update-resource' resource.id %}"><button class="btn btn-warning">Edit resource</button></a>
+                <a href="{% url 'delete-resource' resource.id %}"><button class="btn btn-danger">Delete Resource</button></a>
+            </div>
+            {% endif %}
+            <div class="card-footer text-body-secondary text-center">
+                <a href="{% url 'mobileclinic' resource.mobile_clinic.id %}" class="card-link"><button class="btn btn-primary">Go Back</button></a>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
