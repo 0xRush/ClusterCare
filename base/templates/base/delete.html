@@ -2,10 +2,25 @@
 
 {% block content %}
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <h1>Are you sure you want to delete {{obj}} ?</h1>
-    <button>Submit</button>
-</form>
-<a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card shadow my-5" style="width: 500px;">
+                <div class="card-body">
+                    <form action="" method="POST" class="mb-3">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <h1>Are you sure you want to delete {{obj}} ?</h1>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-danger">Submit</button>
+                        </div>
+                    </form>
+                    <a href="{{request.META.HTTP_REFERER}}"><button class="btn btn-primary">Go Back</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

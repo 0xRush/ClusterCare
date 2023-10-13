@@ -2,15 +2,6 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-md-12">
-        {{ map| safe }}
-        {% for mobileclinic in mobileclinics %}
-            <a href="{% url 'mobileclinic' mobileclinic.id %}"><h1>mobileclinic name: {{mobileclinic.name}}</h2></a>
-            <h2>manager name: {{mobileclinic.manager}}</h2>
-            <hr>
-        {% endfor %}
-    </div>
-</div>
+{{ map| safe }}
 
 {% endblock %}

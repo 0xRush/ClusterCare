@@ -2,33 +2,81 @@
 
 {% block content %}
 
-<div>
-    {% if request.user == activity.mobile_clinic.manager %}
-        <a href="{% url 'update-activity' activity.id %}">Edit Activity</a>
-        <a href="{% url 'delete-activity' activity.id %}">delete Activity</a>
-        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+{% if patients %}
+<div class="row">
+    <div class="col-4 offset-1">
+        <div class="card my-5">
+            <div class="card-body">
+                <h5 class="card-title">Date: {{activity.date}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Latitude:</strong> {{activity.latitude}}</li>
+                <li class="list-group-item"><strong>Longitude:</strong> {{activity.longitude}}</li>
+                <li class="list-group-item"><strong>Population_density:</strong> {{activity.population_density}}</li>
+                <li class="list-group-item"><strong>Crisis_type:</strong> {{activity.crisis_type}}</li>
+                <li class="list-group-item"><strong>Status:</strong> {{activity.status}}</li>
+                <li class="list-group-item"><strong>Num_of_patients:</strong> {{activity.num_of_patients}}</li>
+                <li class="list-group-item"><strong>Weather_status:</strong> {{activity.weather_status}}</li>
+            </ul>
+            {% if request.user == activity.mobile_clinic.manager %}
+            <div class="card-body text-center">
+                <a href="{% url 'update-activity' activity.id %}"><button class="btn btn-warning">Edit Activity</button></a>
+                <a href="{% url 'delete-activity' activity.id %}"><button class="btn btn-danger">Delete Activity</button></a>
+                <a href="{% url 'create-patient' activity.id %}"><button class="btn btn-success">Create Patient</button></a>
+            </div>
+            {% endif %}
+            <div class="card-footer text-body-secondary text-center">
+                <a href="{% url 'mobileclinic' activity.mobile_clinic.id %}"><button class="btn btn-primary">Go Back</button></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-4 offset-1">
+        <h1>Patients</h1>
+        {% for patient in patients %}
+            <div class="card my-5">
+                <div class="card-body">
+                    <h5 class="card-title">Diagnosis: {{patient.diagnosis}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Medication_date:</strong> {{patient.medication_date}}</li>
+                </ul>
+                <div class="card-footer text-body-secondary text-center">
+                    <a href="{% url 'patient' patient.id %}" class="card-link"><button class="btn btn-info">View Patient</button></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card my-5">
+                <div class="card-body">
+                    <h5 class="card-title">Date: {{activity.date}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Latitude:</strong> {{activity.latitude}}</li>
+                    <li class="list-group-item"><strong>Longitude:</strong> {{activity.longitude}}</li>
+                    <li class="list-group-item"><strong>Population_density:</strong> {{activity.population_density}}</li>
+                    <li class="list-group-item"><strong>Crisis_type:</strong> {{activity.crisis_type}}</li>
+                    <li class="list-group-item"><strong>Status:</strong> {{activity.status}}</li>
+                    <li class="list-group-item"><strong>Num_of_patients:</strong> {{activity.num_of_patients}}</li>
+                    <li class="list-group-item"><strong>Weather_status:</strong> {{activity.weather_status}}</li>
+                </ul>
+                {% if request.user == activity.mobile_clinic.manager %}
+                <div class="card-body text-center">
+                    <a href="{% url 'update-activity' activity.id %}"><button class="btn btn-warning">Edit Activity</button></a>
+                    <a href="{% url 'delete-activity' activity.id %}"><button class="btn btn-danger">Delete Activity</button></a>
+                    <a href="{% url 'create-patient' activity.id %}"><button class="btn btn-success">Create Patient</button></a>
+                </div>
+                {% endif %}
+                <div class="card-footer text-body-secondary text-center">
+                    <a href="{% url 'mobileclinic' activity.mobile_clinic.id %}"><button class="btn btn-primary">Go Back</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
-    <p><strong>ID:</strong> {{activity.id}}</p>
-    <p><strong>date:</strong> {{activity.date|timesince}}</p>
-    <p><strong>latitude:</strong> {{activity.latitude}}</p>
-    <p><strong>longitude:</strong> {{activity.longitude}}</p>
-    <p><strong>population_density:</strong> {{activity.population_density}}</p>
-    <p><strong>crisis_type:</strong> {{activity.crisis_type}}</p>
-    <p><strong>status:</strong> {{activity.status}}</p>
-    <p><strong>num_of_patients</strong>: {{activity.num_of_patients}}</p>
-    <p><strong>weather_status:</strong> {{activity.weather_status}}</p>
-</div>
-<hr>
-<div>
-    <h1>patients</h1>
-    {% if request.user == activity.mobile_clinic.manager %}
-        <a href="{% url 'create-patient' activity.id %}">Create Patient</a> 
-    {% endif %}
-    {% for patient in patients %}
-        <a href="{% url 'patient' patient.id %}"><p><strong>ID:</strong> {{patient.id}}</p></a>
-        <p><strong>medication_date:</strong> {{patient.medication_date}}</p>
-        <hr>
-    {% endfor %}
-</div>
+</div> 
 
 {% endblock %}

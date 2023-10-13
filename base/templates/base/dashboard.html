@@ -2,16 +2,31 @@
 
 {% block content %}
 
-{% for mobileclinic in mobileclinics %}
-    {% if request.user == mobileclinic.manager %}
-        <hr>
-        <div>
-        <a href="{% url 'mobileclinic' mobileclinic.id %}"><h1>mobileclinic name: {{mobileclinic.name}}</h2></a>
-            <h2>manager name: {{mobileclinic.manager}}</h2>
-            <p>id: {{mobileclinic.id}}</p>
-        </div>
-        <hr>
-    {% endif %}
-{% endfor %}
+<div class="row">
+    {% for mobileclinic in mobileclinics %}
+        {% if request.user == mobileclinic.manager %}
+            <div class="col-4 offset-1">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Name: {{mobileclinic.name}}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Manager:</strong> {{mobileclinic.manager}}</li>
+                        <li class="list-group-item"><strong>Num_of_staff:</strong> {{mobileclinic.num_of_staff}}</li>
+                        <li class="list-group-item"><strong>Clinic_service</strong>: {{mobileclinic.clinic_services}}</li>
+                        <li class="list-group-item"><strong>Clinic_capacity:</strong> {{mobileclinic.clinic_capacity}}</li>
+                        <li class="list-group-item"><strong>Total_annual_budget:</strong> {{mobileclinic.total_annual_budget}}</li>
+                        <li class="list-group-item"><strong>Pharmaceutical_expenditure:</strong> {{mobileclinic.pharmaceutical_expenditure}}</li>
+                        <li class="list-group-item"><strong>Pharmaceutical_waste:</strong> {{mobileclinic.pharmaceutical_waste}}</li>
+                        <li class="list-group-item"><strong>Created:</strong> {{mobileclinic.created|timesince}}</li>
+                    </ul>
+                    <div class="card-footer text-body-secondary text-center">
+                        <a href="{% url 'mobileclinic' mobileclinic.id %}" class="card-link"><button class="btn btn-info">View clinic</button></a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
 
 {% endblock %}

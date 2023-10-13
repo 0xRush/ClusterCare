@@ -36,6 +36,10 @@ def createMobileClinic(request):
         if form.is_valid():
             mobileclinic = form.save(commit=False)
             mobileclinic.manager = request.user
+            if mobileclinic.pharmaceutical_expenditure > mobileclinic.total_annual_budget:
+                mobileclinic.pharmaceutical_waste = mobileclinic.pharmaceutical_expenditure - mobileclinic.total_annual_budget
+            else:
+                mobileclinic.pharmaceutical_waste = 0
             mobileclinic.save()
             return redirect('dashboard')
 

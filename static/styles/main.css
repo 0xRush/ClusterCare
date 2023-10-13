@@ -12,47 +12,6 @@ padding: 0;
 border: 0;
 }
 
-.navbar {
-background-color: var(--background);
-color: var(--text);
-display: flex;
-align-items: center;
-padding: 10px;
-justify-content: space-between;
-}
-
-.navbar-logo {
-height: 50px;
-width: auto;
-}
-
-.navbar-menu {
-list-style-type: none;
-margin: 0;
-padding: 0;
-display: flex;
-justify-content: center;
-}
-
-.navbar-menu-item {
-margin-right: 20px;
-font-size: 18px;
-cursor: pointer;
-}
-
-.navbar-menu-item:last-child {
-margin-right: 0;
-}
-
-.navbar-menu-item:hover {
-text-decoration: underline;
-}
-
-#map {
-height: 100vh;
-width: 100%;
-}
-
 /* Style for the card popup */
 
 .card-popup {

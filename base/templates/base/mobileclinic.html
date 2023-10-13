@@ -2,45 +2,77 @@
 
 {% block content %}
 
-    <hr>
-    <div>
-        <p><strong>Name:</strong> {{mobileclinic.name}}</p>
-        <p><strong>Manager:</strong> {{mobileclinic.manager}}</p>
-        <p><strong>ID:</strong> {{mobileclinic.id}}</p>
-        <p><strong>num_of_staff:</strong> {{mobileclinic.num_of_staff}}</p>
-        <p><strong>clinic_service</strong>: {{mobileclinic.clinic_services}}</p>
-        <p><strong>clinic_capacity:</strong> {{mobileclinic.clinic_capacity}}</p>
-        <p><strong>total_annual_budget:</strong> {{mobileclinic.total_annual_budget}}</p>
-        <p><strong>pharmaceutical_expenditure:</strong> {{mobileclinic.pharmaceutical_expenditure}}</p>
-        <p><strong>pharmaceutical_waste:</strong> {{mobileclinic.pharmaceutical_waste}}</p>
-        <p><strong>created:</strong> {{mobileclinic.created|timesince}}</p>
+<div class="row">
+    <div class="col-8 offset-2">
+        <div class="card my-5">
+            <div class="card-body">
+                <h5 class="card-title">Name: {{mobileclinic.name}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Manager:</strong> {{mobileclinic.manager}}</li>
+                <li class="list-group-item"><strong>Num_of_staff:</strong> {{mobileclinic.num_of_staff}}</li>
+                <li class="list-group-item"><strong>Clinic_service</strong>: {{mobileclinic.clinic_services}}</li>
+                <li class="list-group-item"><strong>Clinic_capacity:</strong> {{mobileclinic.clinic_capacity}}</li>
+                <li class="list-group-item"><strong>Total_annual_budget:</strong> {{mobileclinic.total_annual_budget}}</li>
+                <li class="list-group-item"><strong>Pharmaceutical_expenditure:</strong> {{mobileclinic.pharmaceutical_expenditure}}</li>
+                <li class="list-group-item"><strong>Pharmaceutical_waste:</strong> {{mobileclinic.pharmaceutical_waste}}</li>
+            </ul>
+            {% if request.user == mobileclinic.manager %}
+            <div class="card-body text-center">
+                <a href="{% url 'update-mobileclinic' mobileclinic.id %}"><button class="btn btn-warning">Edit mobileclinic</button></a>
+                <a href="{% url 'delete-mobileclinic' mobileclinic.id %}"><button class="btn btn-danger">Delete Mobileclinic</button></a>
+                <a href="{% url 'create-activity' mobileclinic.id %}"><button class="btn btn-success">Add Activity</button></a>
+                <a href="{% url 'create-resource' mobileclinic.id %}"><button class="btn btn-success">Add Resources</button></a>
+            </div>
+            {% endif %}
+            <div class="card-footer text-body-secondary">
+                <span><strong>Created:</strong> {{mobileclinic.created|timesince}}</span>
+                <a href="{% url 'dashboard' %}" class="card-link">All clinics</a>
+            </div>
+        </div>
     </div>
-    <div>
-        {% if request.user == mobileclinic.manager %}
-            <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-            <a href="{% url 'update-mobileclinic' mobileclinic.id %}">Edit mobileclinic</a>
-            <a href="{% url 'create-activity' mobileclinic.id %}">Add Activity</a>
-            <a href="{% url 'create-resource' mobileclinic.id %}">Add Resources</a>
-            <a href="{% url 'delete-mobileclinic' mobileclinic.id %}">delete Mobileclinic</a>
-        {% endif %}
-    </div>
-    <hr>
-    <div>
+</div>
+<div class="row">
+    {% if activities %}
+    <div class="col-4 offset-1">
         <h1>Activities:</h1>
         {% for activity in activities %}
-            <a href="{% url 'activity' activity.id %}"><p><strong>ID:</strong> {{activity.id}}</p></a>
-            <p><strong>date:</strong> {{activity.date|timesince}}</p>
-            <hr>
+            <div class="card my-5">
+                <div class="card-body">
+                    <h5 class="card-title">Date: {{activity.date}}</h5>
+                </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Status:</strong> {{activity.status}}</li>
+                <li class="list-group-item"><strong>Num_of_patients:</strong> {{activity.num_of_patients}}</li>
+                <li class="list-group-item"><strong>Weather_status:</strong> {{activity.weather_status}}</li>
+            </ul>
+            <div class="card-footer text-body-secondary text-center">
+                <a href="{% url 'activity' activity.id %}" class="card-link"><button class="btn btn-info">View Activity</button></a>
+            </div>
+        </div>
         {% endfor %}
     </div>
-    <hr>
-    <div>
+    {% endif %}
+    {% if resources %}
+    <div class="col-4 offset-1">
         <h1>Resources:</h1>
         {% for resource in resources %}
-            <a href="{% url 'resource' resource.id %}"><p><strong>ID:</strong> {{resource.id}}</p></a>
-            <p><strong>name:</strong> {{resource.name}}</p>
-            <hr>
+            <div class="card my-5">
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{resource.name}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Type:</strong> {{resource.type}}</li>
+                    <li class="list-group-item"><strong>Expiration_date:</strong> {{resource.expiration_date}}</li>
+                    <li class="list-group-item"><strong>Quantity:</strong> {{resource.quantity}}</li>
+                </ul>
+                <div class="card-footer text-body-secondary text-center">
+                    <a href="{% url 'resource' resource.id %}" class="card-link"><button class="btn btn-info">View Resource</button></a>
+                </div>
+            </div>
         {% endfor %}
     </div>
-
+    {% endif %}
+</div> 
+            
 {% endblock %}

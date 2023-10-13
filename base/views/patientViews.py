@@ -16,18 +16,21 @@ def patient(request, pk):
 @login_required(login_url='login')
 def createPatient(request, fk):
     form = PatientForm()
-    
+    activity = Activity.objects.get(id=fk)
+
+    if request.user != activity.mobile_clinic.manager:
+        messages.error(request, 'you are not allowed here')
+        return redirect('home')
+
     if request.method == 'POST':
         form = PatientForm(request.POST)
         if form.is_valid():
             patient = form.save(commit=False)
-            patient.Activity = Activity.objects.get(id=fk)
-            if request.user != patient.Activity.mobile_clinic.manager:
-                messages.error(request, 'you are not allowed here')
-                return redirect('home')
-            else:
-                patient.save()
-                return redirect('activity', pk=patient.Activity.id)
+            activity.num_of_patients += 1
+            patient.Activity = activity
+            activity.save()
+            patient.save()
+            return redirect('activity', pk=patient.Activity.id)
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)

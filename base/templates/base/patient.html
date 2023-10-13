@@ -2,17 +2,28 @@
 
 {% block content %}
 
-<div>
-    {% if request.user == patient.Activity.mobile_clinic.manager%}
-        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-        <a href="{% url 'update-patient' patient.id %}">Edit Patient</a>
-        <a href="{% url 'delete-patient' patient.id %}">delete Patient</a>
-    {% endif %}
-    <p><strong>ID: </strong>{{patient.id}}</p>
-    <p><strong>age:</strong> {{patient.age}}</p>
-    <p><strong>gender:</strong> {{patient.gender}}</p>
-    <p><strong>diagnosis:</strong> {{patient.diagnosis}}</p>
-    <p><strong>medication_date:</strong> {{patient.medication_date}}</p>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card my-5">
+            <div class="card-body">
+                <h5 class="card-title">Diagnosis: {{patient.diagnosis}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Age:</strong> {{patient.age}}</li>
+                <li class="list-group-item"><strong>Gender:</strong> {{patient.gender}}</li>
+                <li class="list-group-item"><strong>Medication_date:</strong> {{patient.medication_date}}</li>
+            </ul>
+            {% if request.user == patient.Activity.mobile_clinic.manager%}
+            <div class="card-body text-center">
+                <a href="{% url 'update-patient' patient.id %}"><button class="btn btn-warning">Edit Patient</button></a>
+                <a href="{% url 'delete-patient' patient.id %}"><button class="btn btn-danger">Delete Patient</button></a>
+            </div>
+            {% endif %}
+            <div class="card-footer text-body-secondary text-center">
+                <a href="{% url 'activity' patient.Activity.id %}" class="card-link"><button class="btn btn-primary">Go Back</button></a>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
