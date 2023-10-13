@@ -1,6 +1,8 @@
-<nav class="navbar navbar-expand-lg sticky-top" style="background-color: #f8f4ec;">
+{% load static %}
+
+<nav class="navbar navbar-expand-lg sticky-top" style="background-color: #f8f4ec; border-bottom: 2px solid #eeb544;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Logo</a>
+        <img src="{% static 'images/Logo.png' %}" class="navbar-brand" alt="Logo" style="width: 100px; height: 45.89px;">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>

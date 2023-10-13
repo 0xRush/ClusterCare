@@ -6,7 +6,7 @@
     {% for mobileclinic in mobileclinics %}
         {% if request.user == mobileclinic.manager %}
             <div class="col-4 offset-1">
-                <div class="card my-5">
+                <div class="card my-5" id="cards">
                     <div class="card-body">
                         <h5 class="card-title">Name: {{mobileclinic.name}}</h5>
                     </div>

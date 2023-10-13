@@ -7,9 +7,10 @@
 }
 
 body {
-margin: 0;
-padding: 0;
-border: 0;
+    background-color: var(--background);
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 /* Style for the card popup */
@@ -62,4 +63,9 @@ cursor: pointer;
 .action-button:hover {
 background-color: var(--secondary);
 color: var(--text);
+}
+
+#cards {
+    border: 2px #eeb544 solid;
+    background-color: #f9e6c2;
 }
