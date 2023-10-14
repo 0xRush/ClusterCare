@@ -1,15 +1,5 @@
 from ..models import Mobileclinic, Activity, Patient, HistoricalActivity, PredictionActivity
 from django.shortcuts import get_list_or_404
-
-<<<<<<< HEAD
-
-=======
-# for the first time
-<<<<<<< HEAD
->>>>>>> c637c6ad139a971ed59abd83bb47383ef654b11a
-=======
->>>>>>> Iyas
->>>>>>> 4c169ec0186478dc2da8898160a479ff9f6a5815
 def seed():
     mobileclinics = get_list_or_404(Mobileclinic)
 
@@ -46,7 +36,6 @@ def seed():
                 )
     print('seeding..')
 
-=======
         if activities is not None:
             for activity in activities:
                 patients = Patient.objects.filter(Activity=activity)
@@ -116,12 +105,6 @@ def seed():
 #                                 }
 #                             )
 #     print('seeding..')
-<<<<<<< HEAD
->>>>>>> c637c6ad139a971ed59abd83bb47383ef654b11a
-=======
->>>>>>> Iyas
->>>>>>> 4c169ec0186478dc2da8898160a479ff9f6a5815
-
 #  for prediction
 # zone
 # Age
