@@ -63,6 +63,19 @@ def home(request):
     Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     marker_cluster = MarkerCluster().add_to(Map)
     
+    folium.Circle(
+        location=[15.3216, 29.2236],
+        radius=500000,
+        color="red",
+        weight=1,
+        stroke=False,
+        fill=True,
+        fill_opacity=0.6,
+        opacity=1,
+        popup="Danger Area",
+        tooltip="Danger Area",
+    ).add_to(Map)
+
     for activity in activities:
         if activity.status == 'Active':
             folium.Marker(
