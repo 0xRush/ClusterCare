@@ -75,7 +75,7 @@ class ResourceForm(ModelForm):
         cleaned_data = super().clean()
         expiration_date = cleaned_data.get("expiration_date")
 
-        if expiration_date <= datetime.date.today():
+        if expiration_date != None and expiration_date <= datetime.date.today():
             raise ValidationError("The expiration date can not be in the past")
             
 

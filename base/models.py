@@ -16,10 +16,14 @@ class Mobileclinic(models.Model):
     name = models.CharField(max_length=200)
     num_of_staff = models.IntegerField()
     Clinic_Services = (
-        ("Health", "Health"),
-        ("Education", "Education"),
+        ("Emergency Medical Care", "Emergency Medical Care"),
+        ("Wound Care", "Wound Care"),
+        ("Infectious Disease Control", "Infectious Disease Control"),
+        ("Mental Health Support", "Mental Health Support"),
+        ("Rescue and Evacuation Support", "Rescue and Evacuation Support"),
+        ("Health Education", "Health Education"),
     )
-    clinic_services = models.CharField(max_length=10, choices=Clinic_Services)
+    clinic_services = models.CharField(max_length=100, choices=Clinic_Services)
     clinic_capacity = models.IntegerField()
     total_annual_budget = models.IntegerField()
     pharmaceutical_expenditure = models.IntegerField()
@@ -37,12 +41,15 @@ class Resources(models.Model):
     mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     Type = (
-        ("Health", "Health"),
-        ("Education", "Education"),
-        ("Finance", "Finance"),
+        ("Medical Equipment", "Medical Equipment"),
+        ("Medical Supplies", "Medical Supplies"),
+        ("Vaccines and Immunization", "Vaccines and Immunization"),
+        ("Diagnostic and Laboratory Equipment", "Diagnostic and Laboratory Equipment"),
+        ("Pharmaceutical Supplies", "Pharmaceutical Supplies"),
+        ("Emergency Response and Rescue Equipment", "Emergency Response and Rescue Equipment"),
     )
-    type = models.CharField(max_length=10, choices=Type) 
-    expiration_date = models.DateField()
+    type = models.CharField(max_length=100, choices=Type)
+    expiration_date = models.DateField(blank=True, null=True)
     quantity = models.IntegerField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -57,11 +64,21 @@ class Activity(models.Model):
     longitude = models.FloatField()
     population_density = models.IntegerField()
     Crisis_Type = (
-        ("Earthquake", "Earthquake"),
+        ("Earthquakes", "Earthquakes"),
+        ("Tornadoes", "Tornadoes"),
         ("Floods", "Floods"),
-        ("Tornado", "Tornado"),
+        ("Wildfires", "Wildfires"),
+        ("Droughts", "Droughts"),
+        ("Tsunamis", "Tsunamis"),
+        ("Volcanic Eruptions", "Volcanic Eruptions"),
+        ("Pandemics", "Pandemics"),
+        ("Food and Water Contamination", "Food and Water Contamination"),
+        ("Financial Crises", "Financial Crises"),
+        ("Refugee and Displacement Crises", "Refugee and Displacement Crises"),
+        ("Food and Water Scarcity", "Food and Water Scarcity"),
+        ("Healthcare Crises", "Healthcare Crises"),
     )
-    crisis_type = models.CharField(max_length=10, choices=Crisis_Type)
+    crisis_type = models.CharField(max_length=100, choices=Crisis_Type)
     Status = (
         ("Active", "Active"),
         ("inActive", "inActive"),
@@ -69,11 +86,20 @@ class Activity(models.Model):
     status = models.CharField(max_length=20, choices=Status)
     num_of_patients = models.IntegerField()
     Weather_Status = (
+        ("Clear Sky", "Clear Sky"),
         ("Cloudy", "Cloudy"),
-        ("Sunny", "Sunny"),
-        ("Rainy", "Rainy"),
+        ("Partly Cloudy", "Partly Cloudy"),
+        ("Fog", "Fog"),
+        ("Rain", "Rain"),
+        ("Snow", "Snow"),
+        ("Sleet", "Sleet"),
+        ("Thunderstorm", "Thunderstorm"),
+        ("Tornado", "Tornado"),
+        ("Blizzard", "Blizzard"),
+        ("Heatwave", "Heatwave"),
+        ("Dust Storm", "Dust Storm"),
     )
-    weather_status = models.CharField(max_length=10, choices=Weather_Status)
+    weather_status = models.CharField(max_length=100, choices=Weather_Status)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
