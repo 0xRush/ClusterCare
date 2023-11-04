@@ -9,6 +9,10 @@ from folium.plugins import MarkerCluster
 
 
 # Create your views here.
+def page_not_found(request, undefined_path):
+    messages.error(request, 'Page not found')
+    return redirect('home')
+
 def loginPage(request):
     page = 'login'
 
@@ -26,7 +30,7 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user is not None and user.role == 'Manager':
             login(request, user)
             return redirect('home')
         else:
@@ -47,8 +51,8 @@ def registerPage(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.role = 'None'
             user.save()
-            login(request, user)
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registeration')

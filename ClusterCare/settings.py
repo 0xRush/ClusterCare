@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'base.exceptions_middleware.DoesNotExistMiddleware',
 ]
 
 ROOT_URLCONF = 'ClusterCare.urls'
