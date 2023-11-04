@@ -30,7 +30,7 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user is not None and user.role == 'Manager':
             login(request, user)
             return redirect('home')
         else:
@@ -51,8 +51,8 @@ def registerPage(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.role = 'None'
             user.save()
-            login(request, user)
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registeration')
