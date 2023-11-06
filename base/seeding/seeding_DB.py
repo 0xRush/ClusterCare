@@ -1,6 +1,25 @@
 from ..models import Mobileclinic, Activity, Patient, HistoricalActivity, PredictionActivity
 from django.shortcuts import get_list_or_404
 import datetime
+from geopy.geocoders import Nominatim
+
+def get_city_name(latitude, longitude):
+    geolocator = Nominatim(user_agent="city_app")
+    location = geolocator.reverse((latitude, longitude), exactly_one=True)
+    address = location.raw['address']
+    
+    # Try to get the city from the address information
+    city = address.get('city', '')
+    
+    # If city is not available, try other alternatives such as town, village, or other naming conventions
+    if not city:
+        city = address.get('town', '')
+        if not city:
+            city = address.get('village', '')
+            if not city:
+                city = address.get('other_name', '')
+
+    return city
 
 # for the first time
 def seed():
@@ -12,7 +31,7 @@ def seed():
         if activities is not None:
             for activity in activities:
                 patients = Patient.objects.filter(Activity=activity)
-                zone = [activity.latitude, activity.longitude]
+                zone = get_city_name(activity.latitude, activity.longitude)
                 
                 if patients is not None:
                     for patient in patients:
