@@ -6,6 +6,6 @@ from .train import ML_train
 
 def start():
 	scheduler = BackgroundScheduler()
-	scheduler.add_job(seed, 'interval', days=1)
-	scheduler.add_job(ML_train, 'interval', seconds=10)
+	scheduler.add_job(seed, 'interval', seconds=60)
+	scheduler.add_job(ML_train, 'interval', days=1)
 	scheduler.start()

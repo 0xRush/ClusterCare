@@ -25,3 +25,6 @@ def ML_train():
     prediction_data = som.predict(df[columns_for_training].values)
     print(prediction_data)
 
+    for idx, cluster in enumerate(prediction_data):
+        oid = df['_id'][idx]  # Assuming '_id' is a field in your DataFrame
+        HistoricalActivity.update_one({"_id": oid}, {"$set": {"cluster": int(cluster)}})
