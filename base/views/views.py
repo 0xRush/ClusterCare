@@ -9,10 +9,6 @@ from folium.plugins import MarkerCluster
 
 
 # Create your views here.
-def page_not_found(request, undefined_path):
-    messages.error(request, 'Page not found')
-    return redirect('home')
-
 def loginPage(request):
     page = 'login'
 
@@ -95,4 +91,8 @@ def home(request):
 
     context = {'map': Map._repr_html_()}
     return render(request, 'base/home.html', context)
+
+def page_not_found(request, undefined_path):
+    messages.error(request, 'Page not found')
+    return redirect('home')
 
