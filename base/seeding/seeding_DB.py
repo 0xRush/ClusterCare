@@ -3,8 +3,21 @@ from django.shortcuts import get_list_or_404
 import datetime
 from geopy.geocoders import Nominatim
 
+
+# this is a solution by using request library
+# import requests
+
+# def get_country(lat, lon):
+#     url = f'https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json&accept-language=en&zoom=3'
+#     try:
+#         result = requests.get(url=url)
+#         result_json = result.json()
+#         return result_json['display_name']
+#     except:
+#         return None
+
 def get_city_name(latitude, longitude):
-    geolocator = Nominatim(user_agent="city_app")
+    geolocator = Nominatim(user_agent="test_app")
     location = geolocator.reverse((latitude, longitude), exactly_one=True)
     address = location.raw['address']
     

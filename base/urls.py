@@ -5,7 +5,6 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('admin', admin.site.urls),
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.registerPage, name='register'),
@@ -33,5 +32,4 @@ urlpatterns = [
     path('update-patient/<str:pk>', patientViews.updatePatient, name='update-patient'),
     path('delete-patient/<str:pk>', patientViews.deletePatient, name='delete-patient'),
 
-    path('<path:undefined_path>', views.page_not_found, name='page-not-found')
 ]

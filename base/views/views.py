@@ -93,6 +93,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 def page_not_found(request, undefined_path):
-    messages.error(request, 'Page not found')
+    messages.error(request, '404 Page not found')
     return redirect('home')
+    # return render(request, 'base/home.html')
 
