@@ -57,7 +57,7 @@ class ActivityForm(ModelForm):
         cleaned_data = super().clean()
         date = cleaned_data.get("date")
 
-        if date > datetime.date.today():
+        if date != None and date > datetime.date.today():
             raise ValidationError("The Activity date can not be in the future")
 
 class ResourceForm(ModelForm):
@@ -94,5 +94,5 @@ class PatientForm(ModelForm):
         cleaned_data = super().clean()
         medication_date = cleaned_data.get("medication_date")
 
-        if medication_date > datetime.date.today():
+        if medication_date != None and medication_date > datetime.date.today():
             raise ValidationError("The medication date can not be in the future")
