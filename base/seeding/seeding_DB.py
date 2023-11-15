@@ -32,7 +32,37 @@ def get_city_name(latitude, longitude):
             if not city:
                 city = address.get('other_name', '')
 
-    return city
+#     return city
+def get_patient_info(patient):
+    # child 0-16
+    # Young 17-30
+    # Middle-aged 31-45
+    # Old-aged 46 > inf
+    info = {
+        'Child':0,
+        'Young':0,
+        'Middle_aged':0,
+        'Old_aged':0,
+        'Male':0,
+        'Female':0,  
+    }
+
+    diagnosis = {}
+
+    if patient.age > 45:
+        info['Old_aged'] += 1
+    elif patient.age > 30:
+        info['Middle_aged'] += 1
+    elif patient.age > 16:
+        info['Young'] += 1
+    else:
+        info['Child'] += 1
+
+    info[patient.gender] += 1
+
+    # diagnosis[patient.diagnosis] += 1
+
+    return info
 
 # for the first time
 def seed():
@@ -48,28 +78,34 @@ def seed():
                 
                 if patients is not None:
                     for patient in patients:
-                        HistoricalActivity.insert_one(
-                            {
-                            # we need AVg annual disaster and weather fluctuations
-                                # from mobile clinic
-                                'num_of_staff': mobileclinic.num_of_staff,
-                                'clinic_services': mobileclinic.clinic_services,
-                                'clinic_capacity': mobileclinic.clinic_capacity,
-                                'total_annual_budget': mobileclinic.total_annual_budget,
-                                'pharmaceutical_expenditure': mobileclinic.pharmaceutical_expenditure,
-                                'pharmaceutical_waste': mobileclinic.pharmaceutical_waste,
-                                # from activity
-                                'num_of_patients': activity.num_of_patients,
-                                'zone': zone,
-                                'date': f'{activity.date}',
-                                'population_density': activity.population_density,
-                                'crisis_type': activity.crisis_type,
-                                # from patient
-                                'age': patient.age,
-                                'gender': patient.gender,
-                                'diagnosis': patient.diagnosis,
-                            }
-                        )
+                        info = get_patient_info(patient)
+                        
+                    HistoricalActivity.insert_one(
+                        {
+                        # we need AVg annual disaster and weather fluctuations
+                            # from mobile clinic
+                            'num_of_staff': mobileclinic.num_of_staff,
+                            'clinic_services': mobileclinic.clinic_services,
+                            'clinic_capacity': mobileclinic.clinic_capacity,
+                            'total_annual_budget': mobileclinic.total_annual_budget,
+                            'pharmaceutical_expenditure': mobileclinic.pharmaceutical_expenditure,
+                            'pharmaceutical_waste': mobileclinic.pharmaceutical_waste,
+                            # from activity
+                            'num_of_patients': activity.num_of_patients,
+                            'zone': zone,
+                            'date': f'{activity.date}',
+                            'population_density': activity.population_density,
+                            'crisis_type': activity.crisis_type,
+                            # from patient
+                            'Male': info['Male'],
+                            'Female': info['Female'],
+                            'Child': info['Child'],
+                            'Young': info['Young'],
+                            'Middle_aged': info['Middle_aged'],
+                            'Old_aged': info['Old_aged'],
+                            # 'diagnosis': patient.diagnosis,
+                        }
+                    )
     print('seeding..')
 
 # the rest

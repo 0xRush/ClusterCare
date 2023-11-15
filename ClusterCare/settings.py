@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base.apps.BaseConfig',
+    'django_seed',
 ]
 
 AUTH_USER_MODEL = 'base.User'
