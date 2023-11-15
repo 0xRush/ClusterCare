@@ -2,6 +2,7 @@ from ..forms import MyUserCreationForm, MobileclinicForm, ActivityForm, Resource
 from django.test import TestCase
 from datetime import datetime
 
+
 class TestForms(TestCase):
 
     def test_UserCreation_form_valid_data(self):
