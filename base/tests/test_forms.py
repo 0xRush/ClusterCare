@@ -20,7 +20,7 @@ class TestForms(TestCase):
         form = MyUserCreationForm(data={})
         
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 5)
+        self.assertEqual(len(form.errors), 5)
 
     def test_mobileclinic_form_valid_data(self):
         form = MobileclinicForm(data={
@@ -40,7 +40,7 @@ class TestForms(TestCase):
         form = MobileclinicForm(data={})
         
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 6)
+        self.assertEqual(len(form.errors), 6)
 
     def test_resource_form_valid_data(self):
         form = ResourceForm(data={
@@ -57,7 +57,7 @@ class TestForms(TestCase):
         form = ResourceForm(data={})
         
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 3)
+        self.assertEqual(len(form.errors), 3)
 
     def test_activity_form_valid_data(self):
         form = ActivityForm(data={
@@ -78,7 +78,7 @@ class TestForms(TestCase):
         form = ActivityForm(data={})
         
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 6)
+        self.assertEqual(len(form.errors), 6)
 
     def test_patient_form_valid_data(self):
         form = PatientForm(data={
@@ -95,4 +95,4 @@ class TestForms(TestCase):
         form = PatientForm(data={})
         
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors), 4)
+        self.assertEqual(len(form.errors), 4)

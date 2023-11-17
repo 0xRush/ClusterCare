@@ -86,7 +86,7 @@ class PatientForm(ModelForm):
         widgets = {
                 'age': forms.widgets.NumberInput(attrs={"class": "form-control"}),
                 'gender': forms.widgets.Select(attrs={"class": "form-control"}),
-                'diagnosis': forms.widgets.Textarea(attrs={"class": "form-control"}),
+                'diagnosis': forms.widgets.Select(attrs={"class": "form-control"}),
                 'medication_date': forms.widgets.DateInput(attrs={"class": "form-control", "type": "date"}),
             }
 

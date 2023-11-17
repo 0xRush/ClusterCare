@@ -29,7 +29,7 @@ class TestModels(TestCase):
         pharmaceutical_waste=1000
     )
         
-        self.assertEquals(mobileclinic2.name, 'test Mobile Clinic')
+        self.assertEqual(mobileclinic2.name, 'test Mobile Clinic')
 
     def test_resource_model_is_working(self):
         resource = Resources.objects.create(
@@ -40,7 +40,7 @@ class TestModels(TestCase):
             quantity=10
         )
         
-        self.assertEquals(resource.name, 'Test Resource')
+        self.assertEqual(resource.name, 'Test Resource')
 
     def test_activity_model_is_working(self):
         activity = Activity.objects.create(
@@ -55,7 +55,7 @@ class TestModels(TestCase):
             weather_status='Clear Sky'
         )
         
-        self.assertEquals(activity.status, 'Active')
+        self.assertEqual(activity.status, 'Active')
 
     def test_patient_model_is_working(self):
         activity = self.test_activity_model_is_working()
@@ -68,4 +68,4 @@ class TestModels(TestCase):
             medication_date='2023-01-01'
         )
 
-        self.assertEquals(patient.diagnosis, 'Test Diagnosis')
+        self.assertEqual(patient.diagnosis, 'Test Diagnosis')

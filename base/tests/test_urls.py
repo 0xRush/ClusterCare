@@ -10,88 +10,88 @@ class TestUrls(SimpleTestCase):
 
     def test_home_url_is_resolves(self):
         url = reverse('home')
-        self.assertEquals(resolve(url).func, home)
+        self.assertEqual(resolve(url).func, home)
 
     def test_login_url_is_resolves(self):
         url = reverse('login')
-        self.assertEquals(resolve(url).func, loginPage)
+        self.assertEqual(resolve(url).func, loginPage)
 
     def test_register_url_is_resolves(self):
         url = reverse('register')
-        self.assertEquals(resolve(url).func, registerPage)
+        self.assertEqual(resolve(url).func, registerPage)
 
     def test_logout_url_is_resolves(self):
         url = reverse('logout')
-        self.assertEquals(resolve(url).func, logoutUser)
+        self.assertEqual(resolve(url).func, logoutUser)
 
     def test_tips_url_is_resolves(self):
         url = reverse('tips')
-        self.assertEquals(resolve(url).func, tips)
+        self.assertEqual(resolve(url).func, tips)
 
     def test_dashboard_url_is_resolves(self):
         url = reverse('dashboard')
-        self.assertEquals(resolve(url).func, dashboard)
+        self.assertEqual(resolve(url).func, dashboard)
 
     def test_mobileclinic_url_is_resolves(self):
         url = reverse('mobileclinic', args=[1])
-        self.assertEquals(resolve(url).func, mobileclinic)
+        self.assertEqual(resolve(url).func, mobileclinic)
     
     def test_createmobileclinic_url_is_resolves(self):
         url = reverse('create-mobileclinic')
-        self.assertEquals(resolve(url).func, createMobileClinic)
+        self.assertEqual(resolve(url).func, createMobileClinic)
     
     def test_updatemobileclinic_url_is_resolves(self):
         url = reverse('update-mobileclinic', args=[1])
-        self.assertEquals(resolve(url).func, updateMobileClinic)
+        self.assertEqual(resolve(url).func, updateMobileClinic)
 
     def test_deletemobileclinic_url_is_resolves(self):
         url = reverse('delete-mobileclinic', args=[1])
-        self.assertEquals(resolve(url).func, deleteMobileClinic)
+        self.assertEqual(resolve(url).func, deleteMobileClinic)
 
     def test_activity_url_is_resolves(self):
         url = reverse('activity', args=[1])
-        self.assertEquals(resolve(url).func, activity)
+        self.assertEqual(resolve(url).func, activity)
     
     def test_createactivity_url_is_resolves(self):
         url = reverse('create-activity', args=[1])
-        self.assertEquals(resolve(url).func, createActivity)
+        self.assertEqual(resolve(url).func, createActivity)
     
     def test_updateactivity_url_is_resolves(self):
         url = reverse('update-activity', args=[1])
-        self.assertEquals(resolve(url).func, updateActivity)
+        self.assertEqual(resolve(url).func, updateActivity)
 
     def test_deleteactivity_url_is_resolves(self):
         url = reverse('delete-activity', args=[1])
-        self.assertEquals(resolve(url).func, deleteActivity)
+        self.assertEqual(resolve(url).func, deleteActivity)
 
     def test_resource_url_is_resolves(self):
         url = reverse('resource', args=[1])
-        self.assertEquals(resolve(url).func, resource)
+        self.assertEqual(resolve(url).func, resource)
     
     def test_createresource_url_is_resolves(self):
         url = reverse('create-resource', args=[1])
-        self.assertEquals(resolve(url).func, createResource)
+        self.assertEqual(resolve(url).func, createResource)
     
     def test_updateresource_url_is_resolves(self):
         url = reverse('update-resource', args=[1])
-        self.assertEquals(resolve(url).func, updateResource)
+        self.assertEqual(resolve(url).func, updateResource)
 
     def test_deleteresource_url_is_resolves(self):
         url = reverse('delete-resource', args=[1])
-        self.assertEquals(resolve(url).func, deleteResource)
+        self.assertEqual(resolve(url).func, deleteResource)
 
     def test_patient_url_is_resolves(self):
         url = reverse('patient', args=[1])
-        self.assertEquals(resolve(url).func, patient)
+        self.assertEqual(resolve(url).func, patient)
     
     def test_createpatient_url_is_resolves(self):
         url = reverse('create-patient', args=[1])
-        self.assertEquals(resolve(url).func, createPatient)
+        self.assertEqual(resolve(url).func, createPatient)
     
     def test_updatepatient_url_is_resolves(self):
         url = reverse('update-patient', args=[1])
-        self.assertEquals(resolve(url).func, updatePatient)
+        self.assertEqual(resolve(url).func, updatePatient)
 
     def test_deletepatient_url_is_resolves(self):
         url = reverse('delete-patient', args=[1])
-        self.assertEquals(resolve(url).func, deletePatient)
+        self.assertEqual(resolve(url).func, deletePatient)

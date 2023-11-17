@@ -79,48 +79,48 @@ class TestViews(TestCase):
         
         response = self.client.get(self.logout_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     def test_login_GET(self):
         response = self.client.get(self.login_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     def test_login_POST(self):
         user = { 'username': 'testuser', 'password': 'testpassword'}
 
         response = self.client.post(self.login_url, user)
         
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     def test_register_GET(self):
         response = self.client.get(self.register_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/login_register.html')
 
     def test_register_POST(self):
         user = { 'name': 'test', 'username': 'testt', 'email': 'test@gmail.com', 'password1': 't123456789', 'password2': 't123456789'}
         response = self.client.post(self.register_url, user)
         
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_home(self):
         response = self.client.get(self.home_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/home.html')
 
     def test_dashboard(self):
         response = self.client.get(self.dashboard_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/dashboard.html')
 
     def test_tips(self):
         response = self.client.get(self.tips_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/tips.html')
     
     # ===========================================================================================
@@ -128,13 +128,13 @@ class TestViews(TestCase):
     def test_mobileclinic(self):
         response = self.client.get(self.mobileclinic_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic.html')
 
     def test_create_mobileclinic_GET(self):
         response = self.client.get(self.create_mobileclinic_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
 
     def test_create_mobileclinic_POST(self):
@@ -150,13 +150,13 @@ class TestViews(TestCase):
         
         response = self.client.post(self.create_mobileclinic_url, mobileclinic)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(mobileclinic['name'], 'test Mobile Clinic')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(mobileclinic['name'], 'test Mobile Clinic')
 
     def test_update_mobileclinic_GET(self):
         response = self.client.get(self.update_mobileclinic_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
     
     def test_update_mobileclinic_POST(self):
@@ -172,31 +172,31 @@ class TestViews(TestCase):
         
         response = self.client.post(self.update_mobileclinic_url, mobileclinic)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         
     def test_delete_mobileclinic_GET(self):
         response = self.client.get(self.delete_mobileclinic_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/delete.html')
 
     def test_delete_mobileclinic_POST(self):
         response = self.client.post(self.delete_mobileclinic_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     # ===========================================================================================
 
     def test_resource(self):
         response = self.client.get(self.resource_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/resource.html')
 
     def test_create_resource_GET(self):
         response = self.client.get(self.create_resource_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
 
     def test_create_resource_POST(self):
@@ -210,13 +210,13 @@ class TestViews(TestCase):
 
         response = self.client.post(self.create_resource_url, resource)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(resource['name'], 'test Resource')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(resource['name'], 'test Resource')
 
     def test_update_resource_GET(self):
         response = self.client.get(self.update_resource_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
     
     def test_update_resource_POST(self):
@@ -230,31 +230,31 @@ class TestViews(TestCase):
 
         response = self.client.post(self.update_resource_url, resource)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         
     def test_delete_resource_GET(self):
         response = self.client.get(self.delete_resource_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/delete.html')
 
     def test_delete_resource_POST(self):
         response = self.client.post(self.delete_resource_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     # ===========================================================================================   
 
     def test_activity(self):
         response = self.client.get(self.activity_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/activity.html')
 
     def test_create_activity_GET(self):
         response = self.client.get(self.create_activity_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
 
     def test_create_activity_POST(self):
@@ -272,13 +272,13 @@ class TestViews(TestCase):
             
         response = self.client.post(self.create_activity_url, activity)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(activity['status'], 'Active')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(activity['status'], 'Active')
 
     def test_update_activity_GET(self):
         response = self.client.get(self.update_activity_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
     
     def test_update_activity_POST(self):
@@ -296,31 +296,31 @@ class TestViews(TestCase):
         
         response = self.client.post(self.update_activity_url, activity)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         
     def test_delete_activity_GET(self):
         response = self.client.get(self.delete_activity_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/delete.html')
 
     def test_delete_activity_POST(self):
         response = self.client.post(self.delete_activity_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
     # ===========================================================================================   
     
     def test_patient(self):
         response = self.client.get(self.patient_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/patient.html')
 
     def test_create_patient_GET(self):
         response = self.client.get(self.create_patient_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
 
     def test_create_patient_POST(self):
@@ -334,13 +334,13 @@ class TestViews(TestCase):
             
         response = self.client.post(self.create_patient_url, patient)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(patient['age'], 25)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(patient['age'], 25)
 
     def test_update_patient_GET(self):
         response = self.client.get(self.update_patient_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/mobileclinic_form.html')
     
     def test_update_patient_POST(self):
@@ -354,15 +354,15 @@ class TestViews(TestCase):
 
         response = self.client.post(self.update_patient_url, patient)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         
     def test_delete_patient_GET(self):
         response = self.client.get(self.delete_patient_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base/delete.html')
 
     def test_delete_patient_POST(self):
         response = self.client.post(self.delete_patient_url)
 
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)

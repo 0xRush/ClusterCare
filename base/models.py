@@ -1,6 +1,7 @@
 from django.db import models
 from mongodb_connection import db
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 class User(AbstractUser):
@@ -18,8 +19,8 @@ class User(AbstractUser):
 
 class Mobileclinic(models.Model):
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True) 
-    name = models.CharField(max_length=200)
-    num_of_staff = models.IntegerField()
+    name = models.CharField(max_length=50)
+    num_of_staff = models.PositiveIntegerField()
     Clinic_Services = (
         ("Emergency Medical Care", "Emergency Medical Care"),
         ("Wound Care", "Wound Care"),
@@ -29,10 +30,10 @@ class Mobileclinic(models.Model):
         ("Health Education", "Health Education"),
     )
     clinic_services = models.CharField(max_length=100, choices=Clinic_Services)
-    clinic_capacity = models.IntegerField()
-    total_annual_budget = models.IntegerField()
-    pharmaceutical_expenditure = models.IntegerField()
-    pharmaceutical_waste = models.IntegerField()
+    clinic_capacity = models.PositiveIntegerField()
+    total_annual_budget = models.FloatField(validators=[MinValueValidator(0.0)])
+    pharmaceutical_expenditure = models.FloatField(validators=[MinValueValidator(0.0)])
+    pharmaceutical_waste = models.FloatField(validators=[MinValueValidator(0.0)])
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -55,7 +56,7 @@ class Resources(models.Model):
     )
     type = models.CharField(max_length=100, choices=Type)
     expiration_date = models.DateField(blank=True, null=True)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -67,7 +68,7 @@ class Activity(models.Model):
     date = models.DateField()
     latitude = models.FloatField()
     longitude = models.FloatField()
-    population_density = models.IntegerField()
+    population_density = models.PositiveIntegerField()
     Crisis_Type = (
         ("Earthquakes", "Earthquakes"),
         ("Tornadoes", "Tornadoes"),
@@ -89,7 +90,7 @@ class Activity(models.Model):
         ("inActive", "inActive"),
     )
     status = models.CharField(max_length=20, choices=Status)
-    num_of_patients = models.IntegerField()
+    num_of_patients = models.PositiveIntegerField()
     Weather_Status = (
         ("Clear Sky", "Clear Sky"),
         ("Cloudy", "Cloudy"),
@@ -117,16 +118,32 @@ class Activity(models.Model):
     
 class Patient(models.Model):
     Activity = models.ForeignKey(Activity, on_delete=models.SET_NULL, null=True)
-    age = models.IntegerField()
+    age = models.PositiveIntegerField()
     Gender = [
         ("Male", "Male"),
         ("Female", "Female"),
     ]
     gender = models.CharField(max_length=20, choices=Gender)
-    diagnosis = models.TextField()
+    Diagnosis = [
+        ('E11', 'Type 2 Diabetes Mellitus'),
+        ('I10', 'Hypertension'),
+        ('F32', 'Major Depressive Disorder'),
+        ('J20', 'Acute Bronchitis'),
+        ('I10', 'Essential Hypertension'),
+        ('M17', 'Osteoarthritis of Knee'),
+        ('I21', 'Acute Myocardial Infarction'),
+        ('J45', 'Asthma'),
+        ('N39.0', 'Urinary Tract Infection'),
+        ('M47.812', 'Cervical Spondylosis'),
+    ]
+    diagnosis = models.CharField(max_length=20, choices=Diagnosis)
     medication_date = models.DateField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    def get_icd_10_code(self):
+        # Retrieve the ICD-10 code for the selected diagnosis type
+        return dict(self.Diagnosis).get(self.diagnosis, '')
     
     def __str__(self):
         return self.diagnosis[0:50]
