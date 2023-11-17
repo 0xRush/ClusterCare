@@ -125,25 +125,21 @@ class Patient(models.Model):
     ]
     gender = models.CharField(max_length=20, choices=Gender)
     Diagnosis = [
-        ('E11', 'Type 2 Diabetes Mellitus'),
-        ('I10', 'Hypertension'),
-        ('F32', 'Major Depressive Disorder'),
-        ('J20', 'Acute Bronchitis'),
-        ('I10', 'Essential Hypertension'),
-        ('M17', 'Osteoarthritis of Knee'),
-        ('I21', 'Acute Myocardial Infarction'),
-        ('J45', 'Asthma'),
-        ('N39.0', 'Urinary Tract Infection'),
-        ('M47.812', 'Cervical Spondylosis'),
+        ('E11', 'E11'),
+        ('I10', 'I10'),
+        ('F32', 'F32'),
+        ('J20', 'J20'),
+        ('I10', 'I10'),
+        ('M17', 'M17'),
+        ('I21', 'I21'),
+        ('J45', 'J45'),
+        ('N39.0',' N39.0'),
+        ('M47.812', 'M47.812'),
     ]
     diagnosis = models.CharField(max_length=20, choices=Diagnosis)
     medication_date = models.DateField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-
-    def get_icd_10_code(self):
-        # Retrieve the ICD-10 code for the selected diagnosis type
-        return dict(self.Diagnosis).get(self.diagnosis, '')
     
     def __str__(self):
         return self.diagnosis[0:50]

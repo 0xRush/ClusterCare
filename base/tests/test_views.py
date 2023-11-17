@@ -68,7 +68,7 @@ class TestViews(TestCase):
             Activity=self.activity,
             age=25,
             gender='Male',
-            diagnosis='Test Diagnosis',
+            diagnosis='E11',
             medication_date='2023-01-01'
         )
 
@@ -328,7 +328,7 @@ class TestViews(TestCase):
             'Activity': self.activity,
             'age': 25,
             'gender': 'Male',
-            'diagnosis': 'Test Diagnosis',
+            'diagnosis': 'E11',
             'medication_date': '2023-01-01'
         }
             
@@ -348,7 +348,7 @@ class TestViews(TestCase):
             'Activity': self.activity,
             'age': 25,
             'gender': 'Male',
-            'diagnosis': 'Test Diagnosis',
+            'diagnosis': 'E11',
             'medication_date': '2023-01-01'
         }
 

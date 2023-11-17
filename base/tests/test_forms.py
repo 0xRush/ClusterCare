@@ -85,7 +85,7 @@ class TestForms(TestCase):
             'Activity': 1,
             'age': 25,
             'gender': 'Male',
-            'diagnosis': 'Test Diagnosis',
+            'diagnosis': 'E11',
             'medication_date': datetime.strptime('2023-02-01', "%Y-%m-%d").date()
         })
         

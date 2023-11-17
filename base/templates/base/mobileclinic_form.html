@@ -1,21 +1,48 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        {% if page == 'createActivity' %}
-            {{ map|safe}}
+        {% if page == 'createActivity' or page == 'updateActivity' %}
+            <div id="map" style="height: 400px;"></div>
         {% endif %}
-        <form action="" method="POST" class="mb-3">
+        <form id="activityForm" action="" method="POST" class="mb-3">
             {% csrf_token %}
-            {{form.as_p}}
+            {{ form.as_p }}
             <div class="d-grid gap-2">
                 <button class="btn btn-success">Submit</button>
             </div>
         </form>
-        <a href="{{request.META.HTTP_REFERER}}" class="text-center"><button class="btn btn-primary">Go Back</button></a>
+        <a href="{{ request.META.HTTP_REFERER }}" class="text-center"><button class="btn btn-primary">Go Back</button></a>
     </div>
 </div>
+
+<script>
+    const map = L.map('map').setView([23.8859, 45.0792], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    let marker;
+
+    map.on('click', function (e) {
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker(e.latlng).addTo(map);
+        document.getElementById('id_latitude').value = e.latlng.lat.toFixed(6);
+        document.getElementById('id_longitude').value = e.latlng.lng.toFixed(6);
+    });
+
+    // Prevent the form submission when Enter key is pressed
+    document.getElementById('activityForm').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+</script>
 
 {% endblock %}

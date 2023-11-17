@@ -17,7 +17,7 @@ from geopy.geocoders import Nominatim
 #         return None
 
 def get_city_name(latitude, longitude):
-    geolocator = Nominatim(user_agent="test_app")
+    geolocator = Nominatim(user_agent="city_app")
     location = geolocator.reverse((latitude, longitude), exactly_one=True)
     address = location.raw['address']
     
@@ -32,37 +32,7 @@ def get_city_name(latitude, longitude):
             if not city:
                 city = address.get('other_name', '')
 
-#     return city
-def get_patient_info(patient):
-    # child 0-16
-    # Young 17-30
-    # Middle-aged 31-45
-    # Old-aged 46 > inf
-    info = {
-        'Child':0,
-        'Young':0,
-        'Middle_aged':0,
-        'Old_aged':0,
-        'Male':0,
-        'Female':0,  
-    }
-
-    diagnosis = {}
-
-    if patient.age > 45:
-        info['Old_aged'] += 1
-    elif patient.age > 30:
-        info['Middle_aged'] += 1
-    elif patient.age > 16:
-        info['Young'] += 1
-    else:
-        info['Child'] += 1
-
-    info[patient.gender] += 1
-
-    # diagnosis[patient.diagnosis] += 1
-
-    return info
+    return city
 
 # for the first time
 def seed():
@@ -75,11 +45,44 @@ def seed():
             for activity in activities:
                 patients = Patient.objects.filter(Activity=activity)
                 zone = get_city_name(activity.latitude, activity.longitude)
-                
+                info = {
+                    'Child':0,
+                    'Young':0,
+                    'Middle_aged':0,
+                    'Old_aged':0,
+                    'Male':0,
+                    'Female':0,  
+                }
+
+                diagnosis = {
+                    'E11':0,
+                    'I10':0,
+                    'F32':0,
+                    'J20':0,
+                    'I10':0,
+                    'M17':0,
+                    'I21':0,
+                    'J45':0,
+                    'N39.0':0,
+                    'M47.812':0,
+                }
                 if patients is not None:
                     for patient in patients:
-                        info = get_patient_info(patient)
-                        
+                        if patient.age > 45:
+                            info['Old_aged'] += 1
+                        elif patient.age > 30:
+                            info['Middle_aged'] += 1
+                        elif patient.age > 16:
+                            info['Young'] += 1
+                        else:
+                            info['Child'] += 1
+
+                        info[patient.gender] += 1
+
+                        diagnosis[patient.diagnosis] += 1 
+
+                    most_diag = max(diagnosis, key=lambda k: diagnosis[k])
+                    print(activity.latitude, activity.longitude)    
                     HistoricalActivity.insert_one(
                         {
                         # we need AVg annual disaster and weather fluctuations
@@ -103,7 +106,7 @@ def seed():
                             'Young': info['Young'],
                             'Middle_aged': info['Middle_aged'],
                             'Old_aged': info['Old_aged'],
-                            # 'diagnosis': patient.diagnosis,
+                            'diagnosis': most_diag,
                         }
                     )
     print('seeding..')

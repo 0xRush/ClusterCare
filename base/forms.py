@@ -46,8 +46,8 @@ class ActivityForm(ModelForm):
                   'weather_status']
         widgets = {
             'date': forms.widgets.DateInput(attrs={"class": "form-control", "type": "date"}),
-            'latitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
-            'longitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
+            'latitude': forms.widgets.HiddenInput(attrs={"class": "form-control"}),
+            'longitude': forms.widgets.HiddenInput(attrs={"class": "form-control"}),
             'population_density': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'crisis_type': forms.widgets.Select(attrs={"class": "form-control"}),
             'weather_status': forms.widgets.Select(attrs={"class": "form-control"}),
