@@ -18,7 +18,7 @@ class User(AbstractUser):
 
 
 class Mobileclinic(models.Model):
-    manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True) 
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='mobileclinics') 
     name = models.CharField(max_length=50)
     num_of_staff = models.PositiveIntegerField()
     Clinic_Services = (

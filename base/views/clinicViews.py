@@ -23,6 +23,21 @@ def mobileclinic(request, pk):
     mobileclinic = Mobileclinic.objects.get(id=pk)
     activities = Activity.objects.filter(mobile_clinic=mobileclinic)
     resources = Resources.objects.filter(mobile_clinic=mobileclinic)
+    
+    if request.method == 'POST':
+        try:
+            clinic = Mobileclinic.objects.get(id=request.POST.get('selected_clinic'))
+            clinic.total_annual_budget = clinic.total_annual_budget - float(request.POST.get('donation'))
+            mobileclinic.total_annual_budget += float(request.POST.get('donation'))
+            mobileclinic.pharmaceutical_waste -= float(request.POST.get('donation'))
+            mobileclinic.save()
+            clinic.save()
+            messages.success(request, 'Thank you')
+            return redirect('mobileclinic', pk=mobileclinic.id)
+        except:
+            messages.error(request, 'Somthing went wrong!')
+            return redirect('mobileclinic', pk=mobileclinic.id)
+
     context = {'mobileclinic': mobileclinic, 'activities': activities, 'resources': resources}
     return render(request, 'base/mobileclinic.html', context)
 
@@ -41,8 +56,12 @@ def createMobileClinic(request):
             else:
                 mobileclinic.pharmaceutical_waste = 0
             mobileclinic.save()
+            messages.success(request, 'mobile clinic created successfully')
             return redirect('dashboard')
-
+        else:
+            messages.error(request, 'Somthing went wrong!')
+            return redirect('create-mobileclinic')
+        
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
@@ -60,8 +79,12 @@ def updateMobileClinic(request, pk):
         form = MobileclinicForm(request.POST, instance=mobileclinic)
         if form.is_valid():
             form.save()
+            messages.success(request, 'mobile clinic updated successfully')
             return redirect('mobileclinic', pk=mobileclinic.id)
-
+        else:
+            messages.error(request, 'Somthing went wrong!')
+            return redirect('mobileclinic', pk=mobileclinic.id)
+        
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
@@ -72,10 +95,15 @@ def deleteMobileClinic(request, pk):
     if request.user != mobileclinic.manager:
         messages.error(request, 'you are not allowed here')
         return redirect('home')
-
+    
     if request.method == 'POST':
-        mobileclinic.delete()
-        return redirect('dashboard')
+        try:
+            mobileclinic.delete()
+            messages.success(request, 'mobile clinic deleted successfully')
+            return redirect('dashboard')
+        except:
+            messages.error(request, 'Somthing went wrong!')
+            return redirect('dashboard')
     
     context = {'obj': mobileclinic }
     return render(request, 'base/delete.html', context)

@@ -41,8 +41,12 @@ def createActivity(request, fk):
             activity.num_of_patients = 0
             activity.mobile_clinic = mobileclinic
             activity.save()
+            messages.success(request, 'activity created successfully')
             return redirect('mobileclinic', pk=activity.mobile_clinic.id)
-    
+        else:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('dashboard')
+        
     context = {'form': form, 'page': page}
     return render(request, 'base/mobileclinic_form.html', context)
 
@@ -59,7 +63,20 @@ def updateActivity(request, pk):
     if request.method == 'POST':
         form = ActivityForm(request.POST, instance=activity)
         if form.is_valid():
-            form.save()
+            try:
+                oldActivity = Activity.objects.get(mobile_clinic=activity.mobile_clinic, status='Active')
+                oldActivity.status = 'inActive'
+                oldActivity.save()
+            except:
+                print('no activity found')
+
+            activity = form.save(commit=False)
+            activity.status = 'Active'
+            activity.save()
+            messages.success(request, 'activity updated successfully')
+            return redirect('activity', pk=activity.id)
+        else:
+            messages.error(request, 'somthing went wrong!')
             return redirect('activity', pk=activity.id)
         
     context = {'form': form, 'page': page}
@@ -74,8 +91,13 @@ def deleteActivity(request, pk):
         return redirect('home')
 
     if request.method == 'POST':
-        activity.delete()
-        return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+        try:
+            activity.delete()
+            messages.success(request, 'activity deleted successfully')
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+        except:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
     
     context = {'obj': activity}
     return render(request, 'base/delete.html', context)

@@ -25,6 +25,31 @@
                 <a href="{% url 'create-resource' mobileclinic.id %}"><button class="btn btn-success">Add Resources</button></a>
             </div>
             {% endif %}
+            {% if request.user != mobileclinic.manager and mobileclinic.pharmaceutical_waste > 0 %}
+            <div class="card-body text-center">
+                <form action="" method="POST" class="mb-3">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <select name="selected_clinic" class="form-select form-select-sm custom-height" aria-label="Small select example">
+                                <option selected>select clinic to donate from</option>
+                                {% for Donateclinic in request.user.mobileclinics.all %}
+                                    {% if Donateclinic.pharmaceutical_waste == 0 and Donateclinic.total_annual_budget >= mobileclinic.pharmaceutical_waste %}
+                                        <option value="{{ Donateclinic.id }}">{{Donateclinic.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <input type="number" name="donation" id="donation" class="form-control custom-height" min="0" max="{{ mobileclinic.pharmaceutical_waste }}">
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success">Donate</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
             <div class="card-footer text-body-secondary">
                 <span><strong>Created:</strong> {{mobileclinic.created|timesince}}</span>
                 <a href="{% url 'dashboard' %}" class="card-link">All clinics</a>

@@ -30,7 +30,11 @@ def createPatient(request, fk):
             patient.Activity = activity
             activity.save()
             patient.save()
+            messages.success(request, 'patient created successfully')
             return redirect('activity', pk=patient.Activity.id)
+        else:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('activity', pk=activity.id)
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -48,8 +52,12 @@ def updatePatient(request, pk):
         form = PatientForm(request.POST, instance=patient)
         if form.is_valid():
             form.save()
+            messages.success(request, 'patient updated successfully')
             return redirect('patient', pk=patient.id)
-
+        else:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('patient', pk=patient.id)
+        
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
@@ -62,8 +70,13 @@ def deletePatient(request, pk):
         return redirect('home')
     
     if request.method == 'POST':
-        patient.delete()
-        return redirect('activity', pk=patient.Activity.id)
-    
+        try:
+            patient.delete()
+            messages.success(request, 'patient deleted successfully')
+            return redirect('activity', pk=patient.Activity.id)
+        except:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('activity', pk=patient.Activity.id)
+        
     context = {'obj': patient}
     return render(request, 'base/delete.html', context)
