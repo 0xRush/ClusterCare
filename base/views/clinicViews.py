@@ -25,16 +25,23 @@ def mobileclinic(request, pk):
     resources = Resources.objects.filter(mobile_clinic=mobileclinic)
     
     if request.method == 'POST':
-        try:
-            clinic = Mobileclinic.objects.get(id=request.POST.get('selected_clinic'))
-            clinic.total_annual_budget = clinic.total_annual_budget - float(request.POST.get('donation'))
-            mobileclinic.total_annual_budget += float(request.POST.get('donation'))
-            mobileclinic.pharmaceutical_waste -= float(request.POST.get('donation'))
-            mobileclinic.save()
-            clinic.save()
-            messages.success(request, 'Thank you')
-            return redirect('mobileclinic', pk=mobileclinic.id)
-        except:
+        if request.user != mobileclinic.manager:
+            try:
+                clinic = Mobileclinic.objects.get(id=request.POST.get('selected_clinic'))
+                if clinic.total_annual_budget >= mobileclinic.pharmaceutical_waste:
+                    clinic.total_annual_budget = clinic.total_annual_budget - float(request.POST.get('donation'))
+                    if clinic.pharmaceutical_expenditure > clinic.total_annual_budget:
+                        clinic.pharmaceutical_waste = clinic.pharmaceutical_expenditure - clinic.total_annual_budget
+                    mobileclinic.total_annual_budget += float(request.POST.get('donation'))
+                    mobileclinic.pharmaceutical_waste -= float(request.POST.get('donation'))
+                    mobileclinic.save()
+                    clinic.save()
+                    messages.success(request, 'Thank you')
+                    return redirect('mobileclinic', pk=mobileclinic.id)
+            except:
+                messages.error(request, 'Somthing went wrong!')
+                return redirect('mobileclinic', pk=mobileclinic.id)
+        else:
             messages.error(request, 'Somthing went wrong!')
             return redirect('mobileclinic', pk=mobileclinic.id)
 
@@ -78,7 +85,12 @@ def updateMobileClinic(request, pk):
     if request.method == 'POST':
         form = MobileclinicForm(request.POST, instance=mobileclinic)
         if form.is_valid():
-            form.save()
+            clinic = form.save(commit=False)
+            if clinic.pharmaceutical_expenditure > clinic.total_annual_budget:
+                clinic.pharmaceutical_waste = clinic.pharmaceutical_expenditure - clinic.total_annual_budget
+            else:
+                clinic.pharmaceutical_waste = 0
+            clinic.save()
             messages.success(request, 'mobile clinic updated successfully')
             return redirect('mobileclinic', pk=mobileclinic.id)
         else:
