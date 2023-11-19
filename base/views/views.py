@@ -13,6 +13,7 @@ def loginPage(request):
     page = 'login'
 
     if request.user.is_authenticated:
+        messages.warning(request, "you are already logged in")
         return redirect('home')
 
     if request.method == 'POST':
@@ -49,6 +50,7 @@ def registerPage(request):
             user.username = user.username.lower()
             user.role = 'None'
             user.save()
+            messages.warning(request, 'wait untill we activate your account')
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registeration')

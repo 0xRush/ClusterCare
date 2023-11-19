@@ -1,7 +1,8 @@
 from ..models import HistoricalActivity, PredictionActivity
 from sklearn_som.som import SOM
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+import numpy as np
 
 def ML_train():
     historical_data = HistoricalActivity.find()
@@ -11,20 +12,22 @@ def ML_train():
     print(df.dtypes)
 
     columns_for_training = ['num_of_staff', 'clinic_services', 'clinic_capacity', 'total_annual_budget', 'pharmaceutical_expenditure', 'pharmaceutical_waste',
-                            'num_of_patients', 'zone', 'date', 'population_density', 'crisis_type', 'age', 'gender', 'diagnosis']
+                            'num_of_patients', 'zone', 'date', 'population_density', 'crisis_type', 'Male', 'Female', 'Child', 'Young', 'Middle_aged', 'Old_aged', 'diagnosis']
 
-    categorical_columns = ['clinic_services', 'zone', 'date', 'crisis_type', 'gender', 'diagnosis']
+    categorical_columns = ['clinic_services', 'zone', 'date', 'crisis_type', 'diagnosis']
     
     encoder = LabelEncoder()
     for column in categorical_columns:
         df[column] = encoder.fit_transform(df[column])
-   
-    som = SOM(m=3, n=1, dim=len(columns_for_training))  
-    som.fit(df[columns_for_training].values)  
 
-    prediction_data = som.predict(df[columns_for_training].values)
-    print(prediction_data)
+    scaler = MinMaxScaler()
+    newData = scaler.fit_transform(np.float32(df[columns_for_training].values))
+
+    som = SOM(m=3, n=1, dim=len(columns_for_training))  
+    som.fit(newData)  
+
+    prediction_data = som.predict(newData)
 
     for idx, cluster in enumerate(prediction_data):
-        oid = df['_id'][idx]  # Assuming '_id' is a field in your DataFrame
+        oid = df['_id'][idx]  
         HistoricalActivity.update_one({"_id": oid}, {"$set": {"cluster": int(cluster)}})
