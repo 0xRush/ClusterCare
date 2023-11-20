@@ -80,6 +80,29 @@ def home(request):
 
     for activity in activities:
         if activity.status == 'Active':
+            if activity.mobile_clinic.pharmaceutical_waste > 0:
+                folium.Marker(
+                    location=[activity.latitude, activity.longitude],
+                    popup=f"""<h5><a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a></h5>
+                            <p>manager: {activity.mobile_clinic.manager}<p>
+                            <p>clinic_services: {activity.mobile_clinic.clinic_services}</p>
+                            <p>clinic_capacity: {activity.mobile_clinic.clinic_capacity}</p>
+                            <p>num_of_patients: {activity.num_of_patients}</p>
+                            <p>date: {activity.date}</p>""",
+                    icon=folium.Icon(color="red", icon="usd"),
+                ).add_to(marker_cluster)
+            else:
+                folium.Marker(
+                    location=[activity.latitude, activity.longitude],
+                    popup=f"""<h5><a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a></h5>
+                            <p>manager: {activity.mobile_clinic.manager}<p>
+                            <p>clinic_services: {activity.mobile_clinic.clinic_services}</p>
+                            <p>clinic_capacity: {activity.mobile_clinic.clinic_capacity}</p>
+                            <p>num_of_patients: {activity.num_of_patients}</p>
+                            <p>date: {activity.date}</p>""",
+                    icon=folium.Icon(color="green", icon="ok"),
+                ).add_to(marker_cluster)
+        elif activity.status == 'inActive':
             folium.Marker(
                 location=[activity.latitude, activity.longitude],
                 popup=f"""<h5><a href=mobileclinic/{activity.mobile_clinic.id} target=_top>{activity.mobile_clinic.name}</a></h5>
@@ -88,7 +111,7 @@ def home(request):
                           <p>clinic_capacity: {activity.mobile_clinic.clinic_capacity}</p>
                           <p>num_of_patients: {activity.num_of_patients}</p>
                           <p>date: {activity.date}</p>""",
-                icon=folium.Icon(color="green", icon="ok-sign"),
+                icon=folium.Icon(color="lightgray", icon="flag"),
             ).add_to(marker_cluster)
 
     context = {'map': Map._repr_html_()}

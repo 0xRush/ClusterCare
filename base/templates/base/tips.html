@@ -1,22 +1,45 @@
 {% extends 'main.html' %}
 
-{% load static %}
-
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'styles/tips.css' %}">
-<a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-
-<div class="camp-selector">
-    <button id="campDropdownBtn">Select Camp</button>
-    <div id="campDropdownMenu" class="dropdown-menu">
-      <!-- Camp options will be added here dynamically -->
-    </div>
+{% if mobileclinics %}
+<div class="row">
+  <div class="col-6 offset-3">
+      <div class="card my-5" id="cards">
+          <div class="card-body">
+              <h5 class="card-title text-center">Mobileclinics that have pharmaceutical waste</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for mobileclinic in mobileclinics %}
+              <li class="list-group-item">
+                <strong>clinic name:</strong> <a href="{% url 'mobileclinic' mobileclinic.id %}">{{mobileclinic.name}}</a> <br>
+                <strong>clinic waste:</strong> {{mobileclinic.pharmaceutical_waste}}
+              </li>
+            {% endfor %}
+          </ul>
+      </div>
+  </div>
 </div>
-  <div class="card-grid" id="cardGrid">
-    <!-- Cards will be dynamically generated here -->
+{% endif %}
+{% if resources %}
+<div class="row">
+  <div class="col-6 offset-3">
+      <div class="card my-5" id="cards">
+          <div class="card-body">
+              <h5 class="card-title text-center">Resources that will expire soon</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for resource in resources %}
+              <li class="list-group-item">
+                <strong>resource name:</strong> <a href="{% url 'resource' resource.id %}">{{resource.name}}</a> <br>
+                <strong>resource quantity:</strong> {{resource.quantity}} <br>
+                <strong>expiration date:</strong> {{resource.expiration_date}}
+              </li>
+            {% endfor %}
+          </ul>
+      </div>
+  </div>
 </div>
-
-<script src="{% static '/scripts/tips.js' %}"></script>
+{% endif %}
 
 {% endblock %}

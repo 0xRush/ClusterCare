@@ -4,16 +4,22 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from ..models import Mobileclinic, Activity, Resources
 from ..forms import MobileclinicForm
+from django.utils import timezone
+from datetime import timedelta
 
 # this route to show statistics for mobile clinic
 @login_required(login_url='login')
 def tips(request):
-    return render(request, 'base/tips.html')
+    mobileclinics = Mobileclinic.objects.filter(manager=request.user, pharmaceutical_waste__gt=0)
+    two_months_ago = timezone.now() - timedelta(days=60)
+    resources = Resources.objects.filter(mobile_clinic__in=mobileclinics, expiration_date__gte=two_months_ago)
+    context = {'mobileclinics': mobileclinics, 'resources': resources}
+    return render(request, 'base/tips.html', context)
 
 # this route to all mobile clinics
 @login_required(login_url='login')
 def dashboard(request):
-    mobileclinics = Mobileclinic.objects.all()
+    mobileclinics = Mobileclinic.objects.filter(manager=request.user)
     context = {'mobileclinics': mobileclinics}
     return render(request, 'base/dashboard.html', context)
 
