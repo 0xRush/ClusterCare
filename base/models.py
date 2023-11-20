@@ -44,7 +44,7 @@ class Mobileclinic(models.Model):
         return self.name
 
 class Resources(models.Model):
-    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE)
+    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE, related_name='resources')
     name = models.CharField(max_length=200)
     Type = (
         ("Medical Equipment", "Medical Equipment"),
@@ -64,7 +64,7 @@ class Resources(models.Model):
         return self.name
     
 class Activity(models.Model):
-    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE) 
+    mobile_clinic = models.ForeignKey(Mobileclinic, on_delete=models.CASCADE, related_name='activities') 
     date = models.DateField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -117,7 +117,7 @@ class Activity(models.Model):
         return str(self.date)
     
 class Patient(models.Model):
-    Activity = models.ForeignKey(Activity, on_delete=models.SET_NULL, null=True)
+    Activity = models.ForeignKey(Activity, on_delete=models.SET_NULL, null=True, related_name='patients')
     age = models.PositiveIntegerField()
     Gender = [
         ("Male", "Male"),

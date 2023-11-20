@@ -16,6 +16,7 @@ urlpatterns = [
     path('create-mobileclinic/', clinicViews.createMobileClinic, name='create-mobileclinic'),
     path('update-mobileclinic/<str:pk>', clinicViews.updateMobileClinic, name='update-mobileclinic'),
     path('delete-mobileclinic/<str:pk>', clinicViews.deleteMobileClinic, name='delete-mobileclinic'),
+    path('testclinic/<str:pk>', clinicViews.test_clinic, name='test-clinic'),
 
     path('activity/<str:pk>', activityViews.activity, name='activity'),
     path('mobileclinic/<str:fk>/create-activity/', activityViews.createActivity, name='create-activity'),

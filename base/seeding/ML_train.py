@@ -1,10 +1,11 @@
-from ..models import HistoricalActivity, PredictionActivity
+from ..models import HistoricalActivity
 from sklearn_som.som import SOM
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import numpy as np
+import joblib
 
-def ML_train():
+def trainML():
     historical_data = HistoricalActivity.find()
     
     df = pd.DataFrame(historical_data)
@@ -31,3 +32,5 @@ def ML_train():
     for idx, cluster in enumerate(prediction_data):
         oid = df['_id'][idx]  
         HistoricalActivity.update_one({"_id": oid}, {"$set": {"cluster": int(cluster)}})
+    
+    joblib.dump(som, 'model.joblib')
