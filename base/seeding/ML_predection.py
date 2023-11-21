@@ -1,18 +1,7 @@
 from ..models import HistoricalActivity, PredictionActivity
 
-def fetch_historical_data(cluster):
-    try:
-        historical_data = HistoricalActivity.find({"cluster": int(cluster[0])})
-        return historical_data
-    except Exception as e:
-        print(f"Error fetching historical data: {e}")
-        return None
-
 def predection_data(cluster):
-    for retry in range(5):  # You can adjust the number of retries as needed
-        historical_data = fetch_historical_data(cluster)
-        if historical_data is not None:
-            break
+    historical_data = HistoricalActivity.find({"cluster": int(cluster[0])})
         
     ages = {
         'Child': 0,
@@ -44,7 +33,7 @@ def predection_data(cluster):
         most_diag = max(diagnosis, key=lambda k: diagnosis[k])
         most_area = max(zone, key=lambda k: zone[k])
     except Exception as e:
-        print(f"Error in max function: {e}")
+        print(f"Cluster not found: {e}")
         return None
 
     predected_data = {
