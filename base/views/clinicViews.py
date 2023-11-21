@@ -134,5 +134,8 @@ def test_clinic(request, pk):
     data = change_data(mobileclinic)
     test = testML(data)
     predection = predection_data(test)
+    if predection is None:
+        predection = predection_data(test)
+        
     return HttpResponse(predection)
     
