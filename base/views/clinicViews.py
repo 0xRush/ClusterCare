@@ -6,7 +6,7 @@ from ..models import Mobileclinic, Activity, Resources
 from ..forms import MobileclinicForm
 from django.utils import timezone
 from datetime import timedelta
-from ..seeding.ML_test import change_data, testML
+from ..seeding.ML_tst import change_data, testML
 from ..seeding.ML_predection import predection_data
 
 # this route to show statistics for mobile clinic
