@@ -32,7 +32,7 @@ def createResource(request, fk):
             return redirect('mobileclinic', pk=resource.mobile_clinic.id)
         else:
             messages.error(request, 'somthing went wrong!')
-            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+            return redirect('mobileclinic', pk=fk)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
