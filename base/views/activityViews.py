@@ -43,9 +43,6 @@ def createActivity(request, fk):
             activity.save()
             messages.success(request, 'activity created successfully')
             return redirect('mobileclinic', pk=activity.mobile_clinic.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
-            return redirect('dashboard')
         
     context = {'form': form, 'page': page}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -74,9 +71,6 @@ def updateActivity(request, pk):
             activity.status = 'Active'
             activity.save()
             messages.success(request, 'activity updated successfully')
-            return redirect('activity', pk=activity.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
             return redirect('activity', pk=activity.id)
         
     context = {'form': form, 'page': page}

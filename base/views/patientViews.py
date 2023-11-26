@@ -32,9 +32,6 @@ def createPatient(request, fk):
             patient.save()
             messages.success(request, 'patient created successfully')
             return redirect('activity', pk=patient.Activity.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
-            return redirect('activity', pk=activity.id)
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -53,9 +50,6 @@ def updatePatient(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'patient updated successfully')
-            return redirect('patient', pk=patient.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
             return redirect('patient', pk=patient.id)
         
     context = {'form': form}

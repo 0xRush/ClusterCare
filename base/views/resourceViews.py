@@ -30,9 +30,6 @@ def createResource(request, fk):
             resource.save()
             messages.success(request, 'resource created successfully')
             return redirect('mobileclinic', pk=resource.mobile_clinic.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
-            return redirect('mobileclinic', pk=fk)
 
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -51,9 +48,6 @@ def updateResource(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'resource updated successfully')
-            return redirect('resource', pk=resource.id)
-        else:
-            messages.error(request, 'somthing went wrong!')
             return redirect('resource', pk=resource.id)
         
     context = {'form': form}

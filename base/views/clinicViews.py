@@ -73,9 +73,6 @@ def createMobileClinic(request):
             mobileclinic.save()
             messages.success(request, 'mobile clinic created successfully')
             return redirect('dashboard')
-        else:
-            messages.error(request, 'Somthing went wrong!')
-            return redirect('create-mobileclinic')
         
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
@@ -100,9 +97,6 @@ def updateMobileClinic(request, pk):
                 clinic.pharmaceutical_waste = 0
             clinic.save()
             messages.success(request, 'mobile clinic updated successfully')
-            return redirect('mobileclinic', pk=mobileclinic.id)
-        else:
-            messages.error(request, 'Somthing went wrong!')
             return redirect('mobileclinic', pk=mobileclinic.id)
         
     context = {'form': form}
