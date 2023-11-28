@@ -6,8 +6,6 @@ from ..models import Mobileclinic, Activity, Resources
 from ..forms import MobileclinicForm
 from django.utils import timezone
 from datetime import timedelta
-from ..seeding.ML_tst import change_data, testML
-from ..seeding.ML_predection import predection_data
 
 # this route to show statistics for mobile clinic
 @login_required(login_url='login')
@@ -121,13 +119,3 @@ def deleteMobileClinic(request, pk):
     
     context = {'obj': mobileclinic }
     return render(request, 'base/delete.html', context)
-
-@login_required(login_url='login')
-def test_clinic(request, pk):
-    mobileclinic = Mobileclinic.objects.get(id=pk)
-    data = change_data(mobileclinic)
-    test = testML(data)
-    predection = predection_data(test)
-
-    return HttpResponse(predection)
-    

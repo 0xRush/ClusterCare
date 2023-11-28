@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from ..models import Mobileclinic, Activity, User
+from ..models import Mobileclinic, Activity, User, PredictionActivity
 from ..forms import MyUserCreationForm
 import folium
 from folium.plugins import MarkerCluster
+from ..seeding.ML_tst import change_data, testML
+from ..seeding.ML_predection import predection_data
 
 
 # Create your views here.
@@ -60,6 +62,12 @@ def registerPage(request):
 
 
 def home(request):
+    mobileclinic = Mobileclinic.objects.get(id=8)
+    data = change_data(mobileclinic)
+    test = testML(data)
+    predection_data(test)
+    predected_data = PredictionActivity.find_one({"cluster": int(test[0])})
+
     activities = Activity.objects.all()
 
     Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
@@ -74,7 +82,9 @@ def home(request):
         fill=True,
         fill_opacity=0.6,
         opacity=1,
-        popup="Danger Area",
+        popup=f"""<p>age: {predected_data['age']}<p>
+                <p>gender: {predected_data['gender']}</p>
+                <p>diagnosis: {predected_data['diagnosis']}</p>""",
         tooltip="Danger Area",
     ).add_to(Map)
 

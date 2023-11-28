@@ -42,8 +42,21 @@ def predection_data(cluster):
         'gender':most_gender,
         'diagnosis':most_diag,
         'area':most_area,
-        }
-    
-    PredictionActivity.insert_one(predected_data)
+    }
 
-    return predected_data
+    predection = PredictionActivity.find_one({"cluster": int(cluster[0])})
+    
+    if predection:
+        updated_data = {
+        '$set': {
+            'age': most_ages,
+            'gender': most_gender,
+            'diagnosis': most_diag,
+            'area': most_area,
+        }
+    }
+
+        PredictionActivity.update_one({'cluster': int(cluster[0])}, updated_data)
+
+    else:
+        PredictionActivity.insert_one(predected_data)
