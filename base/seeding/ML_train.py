@@ -24,6 +24,7 @@ def trainML():
     scaler = MinMaxScaler()
     newData = scaler.fit_transform(np.float32(df[columns_for_training].values))
 
+    # SOM use Euclidean distance from each item to each cluster center
     som = SOM(m=3, n=1, dim=len(columns_for_training))  
     som.fit(newData)  
 

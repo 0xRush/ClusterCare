@@ -9,7 +9,6 @@ from folium.plugins import MarkerCluster
 from ..seeding.ML_tst import change_data, testML
 from ..seeding.ML_predection import predection_data
 
-
 # Create your views here.
 def loginPage(request):
     page = 'login'
@@ -72,21 +71,22 @@ def home(request):
 
     Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     marker_cluster = MarkerCluster().add_to(Map)
-    
-    folium.Circle(
-        location=[15.3216, 29.2236],
-        radius=500000,
-        color="red",
-        weight=1,
-        stroke=False,
-        fill=True,
-        fill_opacity=0.6,
-        opacity=1,
-        popup=f"""<p>age: {predected_data['age']}<p>
-                <p>gender: {predected_data['gender']}</p>
-                <p>diagnosis: {predected_data['diagnosis']}</p>""",
-        tooltip="Danger Area",
-    ).add_to(Map)
+
+    if predected_data['area'] is not None:
+        folium.Circle( 
+            location= predected_data['area'],
+            radius=500000,
+            color="red",
+            weight=1,
+            stroke=False,
+            fill=True,
+            fill_opacity=0.6,
+            opacity=1,
+            popup=f"""<p><strong>age:</strong> {predected_data['age']}<p>
+                    <p><strong>gender:</strong> {predected_data['gender']}</p>
+                    <p><strong>diagnosis:</strong> {predected_data['diagnosis']}</p>""",
+            tooltip="Danger Area",
+        ).add_to(Map)
 
     for activity in activities:
         if activity.status == 'Active':

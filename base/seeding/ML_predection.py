@@ -1,4 +1,5 @@
 from ..models import HistoricalActivity, PredictionActivity
+from .seeding_DB import get_coordinates
 
 def predection_data(cluster):
     historical_data = HistoricalActivity.find({"cluster": int(cluster[0])})
@@ -17,7 +18,6 @@ def predection_data(cluster):
     diagnosis = {}
 
     for data in historical_data:
-        print(data)
         ages['Old_aged'] += data['Old_aged']
         ages['Middle_aged'] += data['Middle_aged']
         ages['Young'] += data['Young']
@@ -41,7 +41,7 @@ def predection_data(cluster):
         'age':most_ages,
         'gender':most_gender,
         'diagnosis':most_diag,
-        'area':most_area,
+        'area': get_coordinates(most_area),
     }
 
     predection = PredictionActivity.find_one({"cluster": int(cluster[0])})
@@ -52,11 +52,10 @@ def predection_data(cluster):
             'age': most_ages,
             'gender': most_gender,
             'diagnosis': most_diag,
-            'area': most_area,
+            'area': get_coordinates(most_area),
+            }
         }
-    }
 
         PredictionActivity.update_one({'cluster': int(cluster[0])}, updated_data)
-
     else:
         PredictionActivity.insert_one(predected_data)

@@ -2,37 +2,36 @@ from ..models import Mobileclinic, Activity, Patient, HistoricalActivity, Predic
 from django.shortcuts import get_list_or_404
 import datetime
 from geopy.geocoders import Nominatim
-
-
-# this is a solution by using request library
-# import requests
-
-# def get_country(lat, lon):
-#     url = f'https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json&accept-language=en&zoom=3'
-#     try:
-#         result = requests.get(url=url)
-#         result_json = result.json()
-#         return result_json['display_name']
-#     except:
-#         return None
+import geocoder
 
 def get_city_name(latitude, longitude):
-    geolocator = Nominatim(user_agent="city_app")
-    location = geolocator.reverse((latitude, longitude), exactly_one=True)
-    address = location.raw['address']
-    
-    # Try to get the city from the address information
-    city = address.get('city', '')
-    
-    # If city is not available, try other alternatives such as town, village, or other naming conventions
-    if not city:
-        city = address.get('town', '')
-        if not city:
-            city = address.get('village', '')
-            if not city:
-                city = address.get('other_name', '')
+    location = geocoder.osm([latitude, longitude], method='reverse')
+    return location.address
 
-    return city
+def get_coordinates(city_name):
+    location = geocoder.osm(city_name)
+    if location.ok:
+        return location.latlng
+    else:
+        return None
+
+# def get_city_name(latitude, longitude):
+#     geolocator = Nominatim(user_agent="city_app")
+#     location = geolocator.reverse((latitude, longitude), exactly_one=True)
+#     address = location.raw['address']
+    
+#     # Try to get the city from the address information
+#     city = address.get('city', '')
+    
+#     # If city is not available, try other alternatives such as town, village, or other naming conventions
+#     if not city:
+#         city = address.get('town', '')
+#         if not city:
+#             city = address.get('village', '')
+#             if not city:
+#                 city = address.get('other_name', '')
+
+#     return city
 
 # for the first time
 def seed():
@@ -45,6 +44,7 @@ def seed():
             for activity in activities:
                 patients = Patient.objects.filter(Activity=activity)
                 zone = get_city_name(activity.latitude, activity.longitude)
+                
                 info = {
                     'Child':0,
                     'Young':0,
@@ -82,7 +82,7 @@ def seed():
                         diagnosis[patient.diagnosis] += 1 
 
                     most_diag = max(diagnosis, key=lambda k: diagnosis[k])
-                    print(activity.latitude, activity.longitude)    
+                       
                     HistoricalActivity.insert_one(
                         {
                         # we need AVg annual disaster and weather fluctuations
