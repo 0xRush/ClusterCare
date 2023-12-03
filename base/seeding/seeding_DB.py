@@ -2,36 +2,37 @@ from ..models import Mobileclinic, Activity, Patient, HistoricalActivity, Predic
 from django.shortcuts import get_list_or_404
 import datetime
 from geopy.geocoders import Nominatim
-import geocoder
-
-def get_city_name(latitude, longitude):
-    location = geocoder.osm([latitude, longitude], method='reverse')
-    return location.address
 
 def get_coordinates(city_name):
-    location = geocoder.osm(city_name)
-    if location.ok:
-        return location.latlng
+    geolocator = Nominatim(user_agent="city_app")
+    location = geolocator.geocode(city_name)
+
+    # Check if location is found
+    if location:
+        latitude, longitude = location.latitude, location.longitude
+        return latitude, longitude
     else:
         return None
 
-# def get_city_name(latitude, longitude):
-#     geolocator = Nominatim(user_agent="city_app")
-#     location = geolocator.reverse((latitude, longitude), exactly_one=True)
-#     address = location.raw['address']
+def get_city_name(latitude, longitude):
+    geolocator = Nominatim(user_agent="city_app")
+    location = geolocator.reverse((latitude, longitude), exactly_one=True)
+    address = location.raw['address']
     
-#     # Try to get the city from the address information
-#     city = address.get('city', '')
+    # Try to get the city from the address information
+    city = address.get('city', '')
     
-#     # If city is not available, try other alternatives such as town, village, or other naming conventions
-#     if not city:
-#         city = address.get('town', '')
-#         if not city:
-#             city = address.get('village', '')
-#             if not city:
-#                 city = address.get('other_name', '')
-
-#     return city
+    # If city is not available, try other alternatives such as town, village, or other naming conventions
+    if not city:
+        city = address.get('town', '')
+        if not city:
+            city = address.get('village', '')
+            if not city:
+                city = address.get('other_name', '')
+                if not city:
+                    city = None
+                    
+    return city
 
 # for the first time
 def seed():

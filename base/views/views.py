@@ -72,7 +72,7 @@ def home(request):
     Map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
     marker_cluster = MarkerCluster().add_to(Map)
 
-    if predected_data['area'] is not None:
+    if predected_data is not None and predected_data['area'] is not None:
         folium.Circle( 
             location= predected_data['area'],
             radius=500000,
@@ -126,6 +126,7 @@ def home(request):
 
     context = {'map': Map._repr_html_()}
     return render(request, 'base/home.html', context)
+
 
 def page_not_found(request, undefined_path):
     messages.error(request, '404 Page not found')
