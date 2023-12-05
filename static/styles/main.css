@@ -69,3 +69,7 @@ color: var(--text);
     border: 2px #eeb544 solid;
     background-color: #f9e6c2;
 }
+
+.custom-height {
+    height: 38px; /* Adjust the height as needed */
+}

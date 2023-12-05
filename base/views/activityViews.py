@@ -4,9 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from ..models import Mobileclinic, Activity, Patient
 from ..forms import ActivityForm
-import streamlit as st
-from streamlit_folium import folium_static
-import folium
+
 
 # this route to show an activity by it's id
 @login_required(login_url='login')
@@ -27,10 +25,6 @@ def createActivity(request, fk):
         messages.error(request, 'you are not allowed here')
         return redirect('home')
 
-    map = folium.Map(location=[23.8859, 45.0792], zoom_start=5)
-    map.add_child(folium.LatLngPopup())
-    folium_static(map)
-
     if request.method == 'POST':
         form = ActivityForm(request.POST)
         
@@ -47,13 +41,15 @@ def createActivity(request, fk):
             activity.num_of_patients = 0
             activity.mobile_clinic = mobileclinic
             activity.save()
+            messages.success(request, 'activity created successfully')
             return redirect('mobileclinic', pk=activity.mobile_clinic.id)
-    
-    context = {'form': form, 'map':map._repr_html_(), 'page': page}
+        
+    context = {'form': form, 'page': page}
     return render(request, 'base/mobileclinic_form.html', context)
 
 @login_required(login_url='login')
 def updateActivity(request, pk):
+    page = 'updateActivity'
     activity = Activity.objects.get(id=pk)
     form = ActivityForm(instance=activity)
 
@@ -64,10 +60,20 @@ def updateActivity(request, pk):
     if request.method == 'POST':
         form = ActivityForm(request.POST, instance=activity)
         if form.is_valid():
-            form.save()
+            try:
+                oldActivity = Activity.objects.get(mobile_clinic=activity.mobile_clinic, status='Active')
+                oldActivity.status = 'inActive'
+                oldActivity.save()
+            except:
+                print('no activity found')
+
+            activity = form.save(commit=False)
+            activity.status = 'Active'
+            activity.save()
+            messages.success(request, 'activity updated successfully')
             return redirect('activity', pk=activity.id)
         
-    context = {'form': form}
+    context = {'form': form, 'page': page}
     return render(request, 'base/mobileclinic_form.html', context)
 
 @login_required(login_url='login')
@@ -79,8 +85,13 @@ def deleteActivity(request, pk):
         return redirect('home')
 
     if request.method == 'POST':
-        activity.delete()
-        return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+        try:
+            activity.delete()
+            messages.success(request, 'activity deleted successfully')
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
+        except:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('mobileclinic', pk=activity.mobile_clinic.id)
     
     context = {'obj': activity}
     return render(request, 'base/delete.html', context)

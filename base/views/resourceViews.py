@@ -28,6 +28,7 @@ def createResource(request, fk):
             resource = form.save(commit=False)
             resource.mobile_clinic = mobileclinic
             resource.save()
+            messages.success(request, 'resource created successfully')
             return redirect('mobileclinic', pk=resource.mobile_clinic.id)
 
     context = {'form': form}
@@ -46,8 +47,9 @@ def updateResource(request, pk):
         form = ResourceForm(request.POST, instance=resource)
         if form.is_valid():
             form.save()
+            messages.success(request, 'resource updated successfully')
             return redirect('resource', pk=resource.id)
-
+        
     context = {'form': form}
     return render(request, 'base/mobileclinic_form.html', context)
 
@@ -60,8 +62,13 @@ def deleteResource(request, pk):
         return redirect('home')
 
     if request.method == 'POST':
-        resource.delete()
-        return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+        try:
+            resource.delete()
+            messages.success(request, 'resource deleted successfully')
+            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
+        except:
+            messages.error(request, 'somthing went wrong!')
+            return redirect('mobileclinic', pk=resource.mobile_clinic.id)
     
     context = {'obj': resource}
     return render(request, 'base/delete.html', context)

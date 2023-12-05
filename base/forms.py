@@ -46,8 +46,8 @@ class ActivityForm(ModelForm):
                   'weather_status']
         widgets = {
             'date': forms.widgets.DateInput(attrs={"class": "form-control", "type": "date"}),
-            'latitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
-            'longitude': forms.widgets.NumberInput(attrs={"class": "form-control"}),
+            'latitude': forms.widgets.HiddenInput(attrs={"class": "form-control"}),
+            'longitude': forms.widgets.HiddenInput(attrs={"class": "form-control"}),
             'population_density': forms.widgets.NumberInput(attrs={"class": "form-control"}),
             'crisis_type': forms.widgets.Select(attrs={"class": "form-control"}),
             'weather_status': forms.widgets.Select(attrs={"class": "form-control"}),
@@ -57,7 +57,7 @@ class ActivityForm(ModelForm):
         cleaned_data = super().clean()
         date = cleaned_data.get("date")
 
-        if date > datetime.date.today():
+        if date != None and date > datetime.date.today():
             raise ValidationError("The Activity date can not be in the future")
 
 class ResourceForm(ModelForm):
@@ -86,7 +86,7 @@ class PatientForm(ModelForm):
         widgets = {
                 'age': forms.widgets.NumberInput(attrs={"class": "form-control"}),
                 'gender': forms.widgets.Select(attrs={"class": "form-control"}),
-                'diagnosis': forms.widgets.Textarea(attrs={"class": "form-control"}),
+                'diagnosis': forms.widgets.Select(attrs={"class": "form-control"}),
                 'medication_date': forms.widgets.DateInput(attrs={"class": "form-control", "type": "date"}),
             }
 
@@ -94,5 +94,5 @@ class PatientForm(ModelForm):
         cleaned_data = super().clean()
         medication_date = cleaned_data.get("medication_date")
 
-        if medication_date > datetime.date.today():
+        if medication_date != None and medication_date > datetime.date.today():
             raise ValidationError("The medication date can not be in the future")
