@@ -1,5 +1,6 @@
-from ..models import HistoricalActivity, PredictionActivity
+from ..models import HistoricalActivity, PredictionActivity, Mobileclinic
 from .seeding_DB import get_coordinates
+from .ML_tst import change_data, testML
 
 def predection_data(cluster):
     historical_data = HistoricalActivity.find({"cluster": int(cluster[0])})
@@ -59,3 +60,10 @@ def predection_data(cluster):
         PredictionActivity.update_one({'cluster': int(cluster[0])}, updated_data)
     else:
         PredictionActivity.insert_one(predected_data)
+
+
+def ML_predict():
+    mobileclinic = Mobileclinic.objects.get(id=8)
+    data = change_data(mobileclinic)
+    test = testML(data)
+    predection_data(test)
