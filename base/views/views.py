@@ -70,7 +70,7 @@ def home(request):
         if predected_data is not None and predected_data['area'] is not None:
             folium.Circle( 
                 location= predected_data['area'],
-                radius=500000,
+                radius=200000,
                 color="red",
                 weight=1,
                 stroke=False,
